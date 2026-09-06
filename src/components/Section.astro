@@ -1,0 +1,65 @@
+---
+interface Props {
+  /** Rendered as the small uppercase kicker above the heading. */
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  id?: string;
+  /** Sinks the section onto the secondary surface to break up long pages. */
+  sunk?: boolean;
+  /** Removes the top border, for sections that follow a full-bleed block. */
+  seamless?: boolean;
+}
+
+const { eyebrow, title, lede, id, sunk = false, seamless = false } = Astro.props;
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section
+  id={id}
+  class:list={['section', { sunk, seamless }]}
+  aria-labelledby={title ? headingId : undefined}
+>
+  <div class="shell">
+    {
+      (eyebrow || title || lede) && (
+        <div class="head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && <h2 id={headingId} class="title">{title}</h2>}
+          {lede && <p class="lede">{lede}</p>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-y);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .section.seamless {
+    border-block-start: 0;
+  }
+
+  .section.sunk {
+    background: var(--paper-sunk);
+  }
+
+  .head {
+    max-width: 48rem;
+    margin-block-end: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  }
+
+  .title {
+    font-size: var(--step-3);
+    margin-block-start: 0.55rem;
+  }
+
+  .lede {
+    margin-block-start: 1rem;
+    max-width: var(--measure);
+  }
+</style>

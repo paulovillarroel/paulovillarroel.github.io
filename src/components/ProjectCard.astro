@@ -1,0 +1,111 @@
+---
+import type { Locale } from '@/i18n/config';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+  lang: Locale;
+  /** Where the title links to; usually the projects page anchor. */
+  href: string;
+  /** Compact cards drop the context paragraph, for use in listings. */
+  compact?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, lang, href, compact = false, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+---
+
+<article class="card">
+  <p class="meta mono">{project.period}</p>
+
+  <Heading class="title">
+    <a class="title-link" href={href}>{project.title[lang]}</a>
+  </Heading>
+
+  <p class="tagline">{project.tagline[lang]}</p>
+
+  {!compact && <p class="muted context">{project.context[lang]}</p>}
+
+  <ul class="stack-list" aria-label="Stack">
+    {project.stack.map((item) => <li class="chip mono">{item}</li>)}
+  </ul>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    height: 100%;
+    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--accent-line);
+    transform: translateY(-2px);
+  }
+
+  .meta {
+    color: var(--accent);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+  }
+
+  .title {
+    font-size: var(--step-1);
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+  }
+
+  .title-link {
+    text-decoration: none;
+  }
+
+  /* Expands the click target to the whole card without nesting interactive
+     elements, which keeps the single link accessible to keyboards. */
+  .title-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card {
+    position: relative;
+  }
+
+  .tagline {
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.65;
+  }
+
+  .context {
+    font-size: var(--step--1);
+    line-height: 1.65;
+  }
+
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin-block-start: auto;
+    padding-block-start: 0.4rem;
+  }
+
+  .chip {
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink-3);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+  }
+</style>

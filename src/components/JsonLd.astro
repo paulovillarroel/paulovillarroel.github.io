@@ -1,0 +1,92 @@
+---
+import { HTML_LANG, ROUTES, type Locale, type RouteKey } from '@/i18n/config';
+import { AFFILIATIONS, PERSON, SITE, SOCIALS } from '@/data/site';
+import { EDUCATION } from '@/data/career';
+
+interface Props {
+  lang: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+}
+
+const { lang, routeKey, title, description } = Astro.props;
+
+const site = Astro.site ?? new URL(SITE.url);
+const abs = (path: string) => new URL(path, site).href;
+
+const personId = `${abs('/')}#person`;
+const siteId = `${abs('/')}#website`;
+
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: PERSON.name,
+  alternateName: PERSON.shortName,
+  url: abs(ROUTES.home[lang]),
+  image: abs(`/og-${lang}.png`),
+  jobTitle: PERSON.jobTitle[lang],
+  description: PERSON.summary[lang],
+  nationality: { '@type': 'Country', name: PERSON.nationality },
+  worksFor: {
+    '@type': 'GovernmentOrganization',
+    name: AFFILIATIONS.employer.name[lang],
+    url: AFFILIATIONS.employer.url,
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: AFFILIATIONS.alumniOf.name[lang],
+    url: AFFILIATIONS.alumniOf.url,
+  },
+  hasCredential: EDUCATION.map((entry) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: entry.programme[lang],
+    educationalLevel: entry.area[lang],
+    recognizedBy: { '@type': 'Organization', name: entry.institution[lang] },
+  })),
+  knowsAbout: [
+    'Public health data science',
+    'Natural language processing on clinical records',
+    'Waiting list management',
+    'Record linkage',
+    'DuckDB',
+    'Apache Parquet',
+    'R',
+    'Python',
+    'Lean Six Sigma',
+    'Health interoperability',
+  ],
+  knowsLanguage: [
+    { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+    { '@type': 'Language', name: 'English', alternateName: 'en' },
+  ],
+  sameAs: SOCIALS.filter((s) => s.sameAs).map((s) => s.href),
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': siteId,
+  url: abs('/'),
+  name: PERSON.name,
+  inLanguage: HTML_LANG[lang],
+  publisher: { '@id': personId },
+};
+
+// The home page is the canonical profile page; the rest are ordinary pages.
+const page = {
+  '@type': routeKey === 'home' ? 'ProfilePage' : 'WebPage',
+  '@id': `${abs(ROUTES[routeKey][lang])}#page`,
+  url: abs(ROUTES[routeKey][lang]),
+  name: title,
+  description,
+  inLanguage: HTML_LANG[lang],
+  isPartOf: { '@id': siteId },
+  about: { '@id': personId },
+  ...(routeKey === 'home' ? { mainEntity: { '@id': personId } } : {}),
+  dateModified: SITE.updated,
+};
+
+const graph = { '@context': 'https://schema.org', '@graph': [person, website, page] };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} is:inline />

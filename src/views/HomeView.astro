@@ -1,0 +1,439 @@
+---
+import { ROUTES, type Locale } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+import { PERSON } from '@/data/site';
+import { HERO_STATS, PILLARS } from '@/data/profile';
+import { PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
+import { VENTURES } from '@/data/teaching';
+import { POSITIONS } from '@/data/notes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import StatRow from '@/components/StatRow.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const featured = PROJECTS.filter((p) => p.featured).slice(0, 3);
+
+const copy = {
+  metaTitle: {
+    es: 'Paulo Villarroel Tapia — Ciencia de datos en salud pública',
+    en: 'Paulo Villarroel Tapia — Public health data science',
+  },
+  metaDescription: {
+    es: 'Enfermero y científico de datos del Ministerio de Salud de Chile. Más de 20 años entre la atención clínica directa y el diseño de modelos de IA para listas de espera, oncología e interoperabilidad sanitaria.',
+    en: 'Nurse and data scientist at the Chilean Ministry of Health. Over 20 years spanning direct clinical care and the design of AI models for waiting lists, oncology and health interoperability.',
+  },
+  eyebrow: {
+    es: 'Ministerio de Salud de Chile · Oficina de Inteligencia y Gestión Estratégica en Salud',
+    en: 'Chilean Ministry of Health · Office of Intelligence and Strategic Health Management',
+  },
+  heroKicker: {
+    es: 'Enfermero de origen. Veinte años entre la cama del paciente y el modelo en producción.',
+    en: 'A nurse by training. Twenty years between the patient’s bedside and the model in production.',
+  },
+  nowTitle: { es: 'En qué trabajo ahora', en: 'What I am working on now' },
+  pillarsEyebrow: { es: 'Áreas de trabajo', en: 'Areas of work' },
+  pillarsTitle: {
+    es: 'Cuatro líneas que se sostienen entre sí',
+    en: 'Four lines of work that hold each other up',
+  },
+  pillarsLede: {
+    es: 'Ninguna funciona aislada: la clínica define el problema, la ingeniería lo hace tratable, el Estado lo escala y la formación lo sostiene en el tiempo.',
+    en: 'None of them works alone: the clinic defines the problem, engineering makes it tractable, the State scales it, and training keeps it alive over time.',
+  },
+  workEyebrow: { es: 'Proyectos', en: 'Projects' },
+  workTitle: { es: 'Trabajo seleccionado', en: 'Selected work' },
+  workLede: {
+    es: 'Del rediseño de un proceso oncológico con etiquetas de papel a los pipelines de lenguaje natural que hoy corren cada semana sobre las listas de espera quirúrgicas del país.',
+    en: 'From redesigning a cancer pathway with paper stickers to the natural-language pipelines now running weekly over the country’s surgical waiting lists.',
+  },
+  notesEyebrow: { es: 'Doctrina técnica', en: 'Technical positions' },
+  notesTitle: {
+    es: 'Donde la lectura habitual del problema sale cara',
+    en: 'Where the usual reading of the problem gets expensive',
+  },
+  notesLede: {
+    es: 'Tres posiciones que sostengo en el diseño de sistemas sanitarios, y que explican por qué muchos proyectos de datos en salud entregan cifras que nadie puede usar.',
+    en: 'Three positions I hold when designing health systems, and which explain why so many health data projects deliver figures nobody can use.',
+  },
+  teachEyebrow: { es: 'Docencia y comunidad', en: 'Teaching and community' },
+  teachTitle: {
+    es: 'Métodos documentados y transferidos',
+    en: 'Methods documented and handed over',
+  },
+} as const;
+---
+
+<BaseLayout
+  lang={lang}
+  routeKey="home"
+  title={copy.metaTitle[lang]}
+  description={copy.metaDescription[lang]}
+>
+  <section class="hero">
+    <div class="shell">
+      <p class="eyebrow hero-eyebrow">{copy.eyebrow[lang]}</p>
+
+      <h1 class="hero-title">{PERSON.headline[lang]}</h1>
+
+      <hr class="hero-rule" />
+
+      <p class="hero-kicker">{copy.heroKicker[lang]}</p>
+      <p class="lede hero-lede">{PERSON.summary[lang]}</p>
+
+      <div class="hero-actions">
+        <a class="btn" href={ROUTES.work[lang]}>{ui.labels.seeWork[lang]}</a>
+        <a class="arrow-link" href={ROUTES.career[lang]}>{ui.labels.seeCareer[lang]}</a>
+      </div>
+
+      <div class="hero-stats">
+        <StatRow stats={HERO_STATS} lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <Section sunk id="now" eyebrow={STRATEGIC_PROGRAMME.since[lang]} title={copy.nowTitle[lang]}>
+    <div class="now">
+      <p class="lede now-intro">{STRATEGIC_PROGRAMME.intro[lang]}</p>
+      <ol class="programme">
+        {
+          STRATEGIC_PROGRAMME.projects.map((project, i) => (
+            <li class="programme-item">
+              <span class="programme-index mono">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="programme-title">{project.title[lang]}</h3>
+                <p class="muted programme-body">{project.body[lang]}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Section>
+
+  <Section
+    id="areas"
+    eyebrow={copy.pillarsEyebrow[lang]}
+    title={copy.pillarsTitle[lang]}
+    lede={copy.pillarsLede[lang]}
+  >
+    <ul class="pillars">
+      {
+        PILLARS.map((pillar, i) => (
+          <li class="pillar">
+            <span class="pillar-index mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="pillar-title">{pillar.title[lang]}</h3>
+            <p class="pillar-body">{pillar.body[lang]}</p>
+            <p class="pillar-keys mono muted">{pillar.keywords.join(' · ')}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section
+    sunk
+    id="work"
+    eyebrow={copy.workEyebrow[lang]}
+    title={copy.workTitle[lang]}
+    lede={copy.workLede[lang]}
+  >
+    <ul class="cards">
+      {
+        featured.map((project) => (
+          <li>
+            <ProjectCard project={project} lang={lang} href={`${ROUTES.work[lang]}#${project.id}`} compact />
+          </li>
+        ))
+      }
+    </ul>
+    <p class="section-cta">
+      <a class="arrow-link" href={ROUTES.work[lang]}>{ui.labels.seeWork[lang]}</a>
+    </p>
+  </Section>
+
+  <Section
+    id="doctrina"
+    eyebrow={copy.notesEyebrow[lang]}
+    title={copy.notesTitle[lang]}
+    lede={copy.notesLede[lang]}
+  >
+    <ul class="positions">
+      {
+        POSITIONS.map((position) => (
+          <li class="position">
+            <h3 class="position-title">
+              <a class="position-link" href={`${ROUTES.notes[lang]}#${position.id}`}>
+                {position.title[lang]}
+              </a>
+            </h3>
+            <p class="position-claim">{position.claim[lang]}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="section-cta">
+      <a class="arrow-link" href={ROUTES.notes[lang]}>{ui.labels.seeNotes[lang]}</a>
+    </p>
+  </Section>
+
+  <Section sunk id="teaching" eyebrow={copy.teachEyebrow[lang]} title={copy.teachTitle[lang]}>
+    <ul class="ventures">
+      {
+        VENTURES.map((venture) => (
+          <li class="venture">
+            <p class="venture-since mono">{venture.since}</p>
+            <h3 class="venture-name">{venture.name}</h3>
+            <p class="venture-tagline">{venture.tagline[lang]}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="section-cta">
+      <a class="arrow-link" href={ROUTES.teaching[lang]}>{ui.labels.seeTeaching[lang]}</a>
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    padding-block: clamp(3.5rem, 2rem + 7vw, 7.5rem) clamp(3rem, 2rem + 5vw, 6rem);
+  }
+
+  .hero-eyebrow {
+    max-width: 42rem;
+    line-height: 1.5;
+  }
+
+  .hero-title {
+    margin-block-start: 1.4rem;
+    font-size: var(--step-5);
+    letter-spacing: -0.025em;
+    max-width: 24ch;
+  }
+
+  .hero-rule {
+    border: 0;
+    border-block-start: 2px solid var(--accent);
+    width: 4.5rem;
+    margin-block: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
+  }
+
+  .hero-kicker {
+    font-family: var(--font-serif);
+    font-size: var(--step-2);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--ink);
+    max-width: 26ch;
+  }
+
+  .hero-lede {
+    margin-block-start: 1.1rem;
+    max-width: 46rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+    margin-block-start: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.72rem 1.35rem;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: background 0.2s var(--ease);
+  }
+
+  .btn:hover {
+    background: var(--accent-deep);
+  }
+
+  .hero-stats {
+    margin-block-start: clamp(3rem, 2.2rem + 3vw, 5rem);
+  }
+
+  /* ---- Now ---- */
+  .now-intro {
+    max-width: var(--measure);
+    margin-block-end: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .programme {
+    display: grid;
+    gap: 1.5rem clamp(1.5rem, 1rem + 2vw, 2.75rem);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: programme;
+  }
+
+  .programme-item {
+    display: flex;
+    gap: 0.85rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--line-strong);
+  }
+
+  .programme-index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    padding-block-start: 0.25rem;
+    flex: none;
+  }
+
+  .programme-title {
+    font-size: var(--step-0);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+
+  .programme-body {
+    font-size: var(--step--1);
+    line-height: 1.6;
+    margin-block-start: 0.3rem;
+  }
+
+  /* ---- Pillars ---- */
+  /* Two by two: four across would squeeze each column below a readable
+     measure, and three across strands the fourth pillar on its own row. */
+  .pillars {
+    display: grid;
+    gap: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem) clamp(2rem, 1.2rem + 3.5vw, 5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .pillar-index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .pillar-title {
+    font-size: var(--step-2);
+    line-height: 1.22;
+  }
+
+  .pillar-body {
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+    max-width: 34rem;
+  }
+
+  .pillar-keys {
+    margin-block-start: auto;
+    padding-block-start: 0.5rem;
+    font-size: 0.72rem;
+    border-block-start: 1px solid var(--line);
+    max-width: 34rem;
+  }
+
+  /* ---- Cards / ventures ---- */
+  .cards {
+    display: grid;
+    gap: clamp(1rem, 0.7rem + 1.4vw, 1.75rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .section-cta {
+    margin-block-start: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  }
+
+  /* ---- Positions ---- */
+  .positions {
+    display: grid;
+    gap: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .position {
+    padding-block-start: 1.1rem;
+    border-block-start: 1px solid var(--line-strong);
+  }
+
+  .position-title {
+    font-size: var(--step-1);
+    line-height: 1.25;
+  }
+
+  .position-link {
+    text-decoration: none;
+    transition: color 0.18s var(--ease);
+  }
+
+  .position-link:hover {
+    color: var(--accent-deep);
+  }
+
+  .position-claim {
+    margin-block-start: 0.7rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--step-0);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
+  .ventures {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .venture {
+    padding-block-start: 1.1rem;
+    border-block-start: 2px solid var(--accent);
+  }
+
+  .venture-since {
+    color: var(--accent);
+    font-size: 0.72rem;
+  }
+
+  .venture-name {
+    font-size: var(--step-2);
+    margin-block-start: 0.35rem;
+  }
+
+  .venture-tagline {
+    margin-block-start: 0.55rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+  }
+</style>

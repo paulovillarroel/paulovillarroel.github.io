@@ -1,0 +1,99 @@
+---
+import type { Locale } from '@/i18n/config';
+import type { TimelineEntry } from '@/data/career';
+
+interface Props {
+  entries: TimelineEntry[];
+  lang: Locale;
+}
+
+const { entries, lang } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    entries.map((entry) => (
+      <li class="entry" class:list={['entry', { highlight: entry.highlight }]}>
+        <div class="when">
+          <p class="period mono">{entry.period}</p>
+          <p class="field muted">{entry.field[lang]}</p>
+        </div>
+        <div class="what">
+          <h3 class="title">{entry.title[lang]}</h3>
+          <p class="body">{entry.body[lang]}</p>
+          <p class="org mono muted">{entry.org[lang]}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--line);
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: minmax(9rem, 14rem) minmax(0, 1fr);
+    gap: 0.75rem clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+    padding-block: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+    border-block-end: 1px solid var(--line);
+    position: relative;
+  }
+
+  /* A short accent tick marks the entries that carry the most weight. */
+  .entry.highlight::before {
+    content: '';
+    position: absolute;
+    inset-block-start: -1px;
+    inset-inline-start: 0;
+    width: 3.5rem;
+    border-block-start: 2px solid var(--accent);
+  }
+
+  .period {
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .field {
+    font-size: 0.78rem;
+    line-height: 1.5;
+    margin-block-start: 0.3rem;
+  }
+
+  .title {
+    font-size: var(--step-2);
+    line-height: 1.22;
+  }
+
+  .body {
+    margin-block-start: 0.7rem;
+    color: var(--ink-2);
+    max-width: 46rem;
+  }
+
+  .org {
+    margin-block-start: 0.8rem;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 46rem) {
+    .entry {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .field {
+      margin-block-start: 0.1rem;
+    }
+  }
+</style>

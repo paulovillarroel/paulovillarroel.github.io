@@ -1,0 +1,90 @@
+---
+import { LOCALES, NAV_ORDER, ROUTES, HTML_LANG } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+/**
+ * GitHub Pages serves the single root 404.html for every missing path,
+ * including ones under /en/, so this page answers in both languages.
+ */
+---
+
+<BaseLayout
+  lang="es"
+  routeKey="home"
+  title={`${ui.notFound.title.es} · ${ui.notFound.title.en}`}
+  description={ui.notFound.body.es}
+  noindex
+>
+  <section class="notfound">
+    <div class="shell">
+      <p class="eyebrow">{ui.notFound.code.es}</p>
+
+      {
+        LOCALES.map((lang, i) => {
+          // One h1 per document: the second language panel drops to h2.
+          const Heading = i === 0 ? 'h1' : 'h2';
+          return (
+          <div class="panel" lang={HTML_LANG[lang]}>
+            <Heading class="title">{ui.notFound.title[lang]}</Heading>
+            <p class="lede">{ui.notFound.body[lang]}</p>
+            <ul class="links">
+              <li>
+                <a class="arrow-link" href={ROUTES.home[lang]}>
+                  {ui.labels.backHome[lang]}
+                </a>
+              </li>
+              {NAV_ORDER.map((key) => (
+                <li>
+                  <a class="link" href={ROUTES[key][lang]}>
+                    {ui.nav[key][lang]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+  }
+
+  .panel + .panel {
+    margin-block-start: clamp(3rem, 2.2rem + 3vw, 4.5rem);
+    padding-block-start: clamp(2.5rem, 2rem + 2.5vw, 3.5rem);
+    border-block-start: 1px solid var(--line);
+  }
+
+  /* Only the first heading is an h1 visually; the second panel matches it. */
+  .title {
+    margin-block-start: 1rem;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+  }
+
+  .panel:first-of-type .title {
+    font-size: var(--step-4);
+    letter-spacing: -0.022em;
+  }
+
+  .lede {
+    margin-block-start: 1rem;
+    max-width: 34rem;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    list-style: none;
+    padding: 0;
+    margin-block-start: 2rem;
+    font-size: var(--step--1);
+  }
+</style>

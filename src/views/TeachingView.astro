@@ -1,0 +1,406 @@
+---
+import type { Locale } from '@/i18n/config';
+import { APPEARANCE_KINDS, APPEARANCES, CURRICULUM, VENTURES } from '@/data/teaching';
+import { COHORT_ARTEFACTS } from '@/data/notes';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Section from '@/components/Section.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+  metaTitle: { es: 'Docencia y transferencia técnica', en: 'Teaching and technical transfer' },
+  metaDescription: {
+    es: 'Ponencias en LatinR y useR!, docencia de postgrado en la UNAB, talleres para el Laboratorio de Gobierno y las iniciativas abiertas OpenSalud LAB y Hazla con Datos.',
+    en: 'Talks at LatinR and useR!, postgraduate teaching at UNAB, workshops for Chile’s Laboratorio de Gobierno, and the open initiatives OpenSalud LAB and Hazla con Datos.',
+  },
+  eyebrow: { es: 'Transferencia técnica', en: 'Technical transfer' },
+  title: {
+    es: 'Docencia, ponencias y comunidad técnica',
+    en: 'Teaching, talks and technical community',
+  },
+  lede: {
+    es: 'Parte del trabajo técnico consiste en dejarlo transferido. Estas son las conferencias, los programas de postgrado y las iniciativas abiertas donde he documentado y enseñado los métodos que uso en el Ministerio.',
+    en: 'Part of technical work is leaving it transferable. These are the conferences, postgraduate programmes and open initiatives where I have documented and taught the methods I use at the Ministry.',
+  },
+  venturesEyebrow: { es: 'Iniciativas abiertas', en: 'Open initiatives' },
+  venturesTitle: { es: 'Dos estructuras de trabajo abierto', en: 'Two open working structures' },
+  curriculumEyebrow: { es: 'Contenidos', en: 'Contents' },
+  curriculumTitle: {
+    es: 'Métodos y herramientas que enseño',
+    en: 'Methods and tools I teach',
+  },
+  curriculumLede: {
+    es: 'El temario técnico, desde la nivelación en herramientas de línea de comandos hasta el procesamiento de lenguaje natural sobre epicrisis.',
+    en: 'The technical syllabus, from command-line tooling fundamentals through to natural language processing over discharge summaries.',
+  },
+  colPhase: { es: 'Módulo', en: 'Module' },
+  colContents: { es: 'Contenidos', en: 'Contents' },
+  colTooling: { es: 'Entorno', en: 'Tooling' },
+  colOutcome: { es: 'Aplicación clínica', en: 'Clinical application' },
+  artefactsEyebrow: { es: 'Ejercicios', en: 'Exercises' },
+  artefactsTitle: { es: 'Qué se construye en clase', en: 'What gets built in class' },
+  artefactsLede: {
+    es: 'No son datasets de ejemplo. Cada ejercicio parte de un problema de registro sanitario real, con la suciedad y la ambigüedad que eso implica.',
+    en: 'These are not sample datasets. Every exercise starts from a real health-record problem, with the mess and ambiguity that entails.',
+  },
+  talksEyebrow: { es: 'Registro', en: 'Record' },
+  talksTitle: { es: 'Dónde he presentado este trabajo', en: 'Where this work has been presented' },
+} as const;
+
+// Talks read better grouped by kind than as one long mixed list.
+const grouped = (['conference', 'teaching', 'government'] as const).map((kind) => ({
+  kind,
+  items: APPEARANCES.filter((a) => a.kind === kind),
+}));
+
+// Press coverage is recorded, but it does not get a column of its own next to
+// peer-reviewed venues.
+const media = APPEARANCES.filter((a) => a.kind === 'media');
+---
+
+<BaseLayout
+  lang={lang}
+  routeKey="teaching"
+  title={copy.metaTitle[lang]}
+  description={copy.metaDescription[lang]}
+>
+  <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]} lede={copy.lede[lang]} />
+
+  <Section sunk id="ponencias" eyebrow={copy.talksEyebrow[lang]} title={copy.talksTitle[lang]}>
+    <div class="talks">
+      {
+        grouped.map((group) => (
+          <section class="talk-group">
+            <h3 class="group-title">{APPEARANCE_KINDS[group.kind][lang]}</h3>
+            <ul class="talk-list">
+              {group.items.map((item) => (
+                <li class="talk">
+                  <p class="talk-year mono">{item.year}</p>
+                  <p class="talk-title">
+                    {item.url ? (
+                      <a class="link" href={item.url} rel="noopener" target="_blank">
+                        {item.title[lang]}
+                      </a>
+                    ) : (
+                      item.title[lang]
+                    )}
+                  </p>
+                  <p class="talk-venue muted">{item.venue[lang]}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="media">
+      <h3 class="group-title">{APPEARANCE_KINDS.media[lang]}</h3>
+      <ul class="media-list">
+        {
+          media.map((item) => (
+            <li>
+              <span class="talk-year mono">{item.year}</span> {item.title[lang]}
+              <span class="muted"> — {item.venue[lang]}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+
+  <Section id="ejercicios" eyebrow={copy.artefactsEyebrow[lang]} title={copy.artefactsTitle[lang]} lede={copy.artefactsLede[lang]}>
+    <ul class="artefacts">
+      {COHORT_ARTEFACTS.map((item) => <li class="artefact">{item[lang]}</li>)}
+    </ul>
+  </Section>
+
+  <Section sunk id="iniciativas" eyebrow={copy.venturesEyebrow[lang]} title={copy.venturesTitle[lang]}>
+    <div class="ventures">
+      {
+        VENTURES.map((venture) => (
+          <article class="venture">
+            <p class="venture-since mono">{venture.since}</p>
+            <h3 class="venture-name">
+              {venture.url ? (
+                <a class="link" href={venture.url} rel="noopener" target="_blank">
+                  {venture.name}
+                </a>
+              ) : (
+                venture.name
+              )}
+            </h3>
+            <p class="venture-tagline">{venture.tagline[lang]}</p>
+            {venture.body[lang].map((paragraph) => <p class="venture-body">{paragraph}</p>)}
+            {
+              venture.bullets[lang].length > 0 && (
+                <ul class="venture-list">
+                  {venture.bullets[lang].map((item) => <li>{item}</li>)}
+                </ul>
+              )
+            }
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    id="ruta"
+    eyebrow={copy.curriculumEyebrow[lang]}
+    title={copy.curriculumTitle[lang]}
+    lede={copy.curriculumLede[lang]}
+  >
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">{copy.colPhase[lang]}</th>
+            <th scope="col">{copy.colContents[lang]}</th>
+            <th scope="col">{copy.colTooling[lang]}</th>
+            <th scope="col">{copy.colOutcome[lang]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            CURRICULUM.map((phase, i) => (
+              <tr>
+                <th scope="row">
+                  <span class="phase-index mono">{String(i + 1).padStart(2, '0')}</span>
+                  {phase.phase[lang]}
+                </th>
+                <td>{phase.contents[lang]}</td>
+                <td class="mono tooling">{phase.tooling}</td>
+                <td class="muted">{phase.outcome[lang]}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+</BaseLayout>
+
+<style>
+  /* ---- Ventures ---- */
+  .artefacts {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--line-strong);
+    max-width: 54rem;
+  }
+
+  .artefact {
+    padding-block: 1.05rem;
+    padding-inline-start: 1.5rem;
+    border-block-end: 1px solid var(--line);
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.65;
+    position: relative;
+  }
+
+  .artefact::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 1.75em;
+    width: 0.75rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .ventures {
+    display: grid;
+    gap: clamp(2.5rem, 1.8rem + 3vw, 4rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  }
+
+  .venture-since {
+    color: var(--accent);
+    font-size: 0.74rem;
+  }
+
+  .venture-name {
+    margin-block-start: 0.35rem;
+    font-size: var(--step-3);
+  }
+
+  .venture-tagline {
+    margin-block-start: 0.8rem;
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--ink);
+    max-width: 34rem;
+  }
+
+  .venture-body {
+    margin-block-start: 1rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.75;
+    max-width: 34rem;
+  }
+
+  .venture-list {
+    margin-block-start: 1.2rem;
+    display: grid;
+    gap: 0.7rem;
+    list-style: none;
+    padding: 0;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.65;
+    max-width: 34rem;
+  }
+
+  .venture-list li {
+    position: relative;
+    padding-inline-start: 1.1rem;
+  }
+
+  .venture-list li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.6em;
+    width: 0.4rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  /* ---- Curriculum table ---- */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .table {
+    width: 100%;
+    min-width: 50rem;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  .table th,
+  .table td {
+    padding: 1rem 1.1rem;
+    vertical-align: top;
+    text-align: start;
+    border-block-end: 1px solid var(--line);
+  }
+
+  .table thead th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--paper-sunk);
+    white-space: nowrap;
+  }
+
+  .table tbody th {
+    font-weight: 600;
+    color: var(--ink);
+    width: 12rem;
+  }
+
+  .phase-index {
+    display: block;
+    color: var(--accent);
+    font-size: 0.7rem;
+    margin-block-end: 0.25rem;
+  }
+
+  .tooling {
+    color: var(--ink-2);
+    font-size: 0.74rem;
+    line-height: 1.7;
+  }
+
+  .table tbody tr:last-child th,
+  .table tbody tr:last-child td {
+    border-block-end: 0;
+  }
+
+  /* ---- Talks ---- */
+  .talks {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(2rem, 1.2rem + 3vw, 4rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+
+  .group-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-block-end: 0.8rem;
+    border-block-end: 1px solid var(--line-strong);
+  }
+
+  .talk-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+  }
+
+  .talk {
+    padding-block: 1rem;
+    border-block-end: 1px solid var(--line);
+  }
+
+  .talk-year {
+    color: var(--accent);
+    font-size: 0.72rem;
+  }
+
+  .talk-title {
+    margin-block-start: 0.35rem;
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1.55;
+  }
+
+  .media {
+    margin-block-start: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+    padding-block-start: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+    border-block-start: 1px solid var(--line);
+  }
+
+  .media-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 54rem;
+  }
+
+  .talk-venue {
+    margin-block-start: 0.25rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,272 @@
+---
+import type { Locale } from '@/i18n/config';
+import { CAREER_NARRATIVE, CONCLUSIONS } from '@/data/profile';
+import { EDUCATION, RECOGNITION, TIMELINE } from '@/data/career';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Section from '@/components/Section.astro';
+import Timeline from '@/components/Timeline.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+  metaTitle: { es: 'Trayectoria', en: 'Career' },
+  metaDescription: {
+    es: 'De enfermero clínico en urgencias y ambulancias a científico de datos del Ministerio de Salud de Chile: formación, hitos verificables y reconocimientos entre 2004 y 2026.',
+    en: 'From clinical nurse in emergency rooms and ambulances to data scientist at the Chilean Ministry of Health: education, verifiable milestones and recognition from 2004 to 2026.',
+  },
+  eyebrow: { es: '2004 — 2026', en: '2004 — 2026' },
+  title: {
+    es: 'Del cuidado directo a la arquitectura analítica del Estado',
+    en: 'From direct care to the analytics architecture of the State',
+  },
+  narrativeTitle: { es: 'Cómo llegué acá', en: 'How I got here' },
+  timelineEyebrow: { es: 'Cronología', en: 'Chronology' },
+  timelineTitle: { es: 'Hitos verificables', en: 'Verifiable milestones' },
+  timelineLede: {
+    es: 'Cada entrada corresponde a un proyecto, publicación o distinción documentada, con la institución que la respalda.',
+    en: 'Each entry corresponds to a documented project, publication or distinction, with the institution that backs it.',
+  },
+  educationEyebrow: { es: 'Formación', en: 'Education' },
+  educationTitle: {
+    es: 'Una malla curricular deliberada',
+    en: 'A deliberate curriculum',
+  },
+  educationLede: {
+    es: 'Cada programa resolvió una limitación concreta del programa anterior: la clínica dio el problema, la gestión dio el método, la computación dio la escala.',
+    en: 'Each programme addressed a concrete limit of the one before it: the clinic supplied the problem, management supplied the method, computing supplied the scale.',
+  },
+  colArea: { es: 'Ámbito', en: 'Area' },
+  colProgramme: { es: 'Programa', en: 'Programme' },
+  colInstitution: { es: 'Institución', en: 'Institution' },
+  colContribution: { es: 'Aporte metodológico', en: 'Methodological contribution' },
+  recognitionEyebrow: { es: 'Reconocimientos', en: 'Recognition' },
+  recognitionTitle: { es: 'Distinciones y selecciones', en: 'Distinctions and selections' },
+  conclusionsEyebrow: { es: 'Conclusiones', en: 'Conclusions' },
+  conclusionsTitle: {
+    es: 'Cuatro cosas que este recorrido deja claras',
+    en: 'Four things this path makes clear',
+  },
+} as const;
+---
+
+<BaseLayout
+  lang={lang}
+  routeKey="career"
+  title={copy.metaTitle[lang]}
+  description={copy.metaDescription[lang]}
+>
+  <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]}>
+    <div class="prose narrative">
+      {CAREER_NARRATIVE[lang].map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </PageHeader>
+
+  <Section
+    sunk
+    id="cronologia"
+    eyebrow={copy.timelineEyebrow[lang]}
+    title={copy.timelineTitle[lang]}
+    lede={copy.timelineLede[lang]}
+  >
+    <Timeline entries={TIMELINE} lang={lang} />
+  </Section>
+
+  <Section
+    id="formacion"
+    eyebrow={copy.educationEyebrow[lang]}
+    title={copy.educationTitle[lang]}
+    lede={copy.educationLede[lang]}
+  >
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">{copy.colArea[lang]}</th>
+            <th scope="col">{copy.colProgramme[lang]}</th>
+            <th scope="col">{copy.colInstitution[lang]}</th>
+            <th scope="col">{copy.colContribution[lang]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            EDUCATION.map((entry) => (
+              <tr>
+                <th scope="row">{entry.area[lang]}</th>
+                <td>{entry.programme[lang]}</td>
+                <td class="muted">{entry.institution[lang]}</td>
+                <td class="muted">{entry.contribution[lang]}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  <Section
+    sunk
+    id="reconocimientos"
+    eyebrow={copy.recognitionEyebrow[lang]}
+    title={copy.recognitionTitle[lang]}
+  >
+    <ul class="awards">
+      {
+        RECOGNITION.map((item) => (
+          <li class="award">
+            <p class="award-year mono">{item.year}</p>
+            <p class="award-title">{item.title[lang]}</p>
+            <p class="award-org muted">{item.org[lang]}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section
+    id="conclusiones"
+    eyebrow={copy.conclusionsEyebrow[lang]}
+    title={copy.conclusionsTitle[lang]}
+  >
+    <ol class="conclusions">
+      {
+        CONCLUSIONS.map((item, i) => (
+          <li class="conclusion">
+            <span class="conclusion-index mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="conclusion-title">{item.title[lang]}</h3>
+            <p class="conclusion-body">{item.body[lang]}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+</BaseLayout>
+
+<style>
+  .narrative {
+    max-width: 42rem;
+  }
+
+  .narrative p {
+    color: var(--ink-2);
+  }
+
+  .narrative p:first-child {
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  /* ---- Education table ---- */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .table {
+    width: 100%;
+    min-width: 46rem;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    text-align: start;
+  }
+
+  .table th,
+  .table td {
+    padding: 1rem 1.1rem;
+    vertical-align: top;
+    text-align: start;
+    border-block-end: 1px solid var(--line);
+  }
+
+  .table thead th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: var(--paper-sunk);
+    white-space: nowrap;
+  }
+
+  .table tbody th {
+    font-weight: 600;
+    color: var(--ink);
+    width: 11rem;
+  }
+
+  .table tbody tr:last-child th,
+  .table tbody tr:last-child td {
+    border-block-end: 0;
+  }
+
+  /* ---- Awards ---- */
+  .awards {
+    display: grid;
+    gap: clamp(1.25rem, 0.9rem + 1.4vw, 2rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .award {
+    padding-block-start: 0.9rem;
+    border-block-start: 1px solid var(--line-strong);
+  }
+
+  .award-year {
+    color: var(--accent);
+    font-size: 0.74rem;
+  }
+
+  .award-title {
+    margin-block-start: 0.4rem;
+    font-weight: 600;
+    font-size: var(--step--1);
+    line-height: 1.5;
+  }
+
+  .award-org {
+    margin-block-start: 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+
+  /* ---- Conclusions ---- */
+  .conclusions {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(2rem, 1.2rem + 3.5vw, 5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .conclusion-index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .conclusion-title {
+    margin-block-start: 0.5rem;
+    font-size: var(--step-1);
+    line-height: 1.3;
+  }
+
+  .conclusion-body {
+    margin-block-start: 0.6rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+    max-width: 34rem;
+  }
+</style>

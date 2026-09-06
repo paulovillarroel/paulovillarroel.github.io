@@ -1,0 +1,155 @@
+---
+import { NAV_ORDER, ROUTES, type Locale, type RouteKey } from '@/i18n/config';
+import { ui } from '@/i18n/ui';
+import { PERSON } from '@/data/site';
+
+interface Props {
+  lang: Locale;
+  routeKey: RouteKey;
+}
+
+const { lang, routeKey } = Astro.props;
+const other: Locale = lang === 'es' ? 'en' : 'es';
+---
+
+<header class="site-header">
+  <div class="shell bar">
+    <a class="wordmark" href={ROUTES.home[lang]} aria-current={routeKey === 'home' ? 'page' : undefined}>
+      <span class="wordmark-mark" aria-hidden="true"></span>
+      <span class="wordmark-text">{PERSON.shortName}</span>
+    </a>
+
+    <nav aria-label={ui.mainNav[lang]}>
+      <ul class="nav">
+        {
+          NAV_ORDER.map((key) => (
+            <li>
+              <a
+                href={ROUTES[key][lang]}
+                class="nav-link"
+                aria-current={routeKey === key ? 'page' : undefined}
+              >
+                {ui.nav[key][lang]}
+              </a>
+            </li>
+          ))
+        }
+        <li class="nav-sep" role="presentation"></li>
+        <li>
+          <a
+            href={ROUTES[routeKey][other]}
+            class="nav-link lang"
+            lang={other}
+            hreflang={other}
+            title={ui.otherLangName[lang]}
+          >
+            <span class="visually-hidden">{ui.langSwitch[lang]}: </span>{ui.langLabel[other]}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(1.6) blur(10px);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  /* Miniature of the site mark, drawn in CSS so it costs no request. */
+  .wordmark-mark {
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 3px;
+    background: var(--accent);
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0 2px,
+      color-mix(in srgb, var(--paper) 80%, transparent) 2px 3.2px
+    );
+    flex: none;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 0.3rem + 1.4vw, 1.6rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-link {
+    display: inline-block;
+    padding-block: 0.35rem;
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.005em;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-block-end: 1.5px solid transparent;
+    transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
+  }
+
+  .nav-link:hover {
+    color: var(--ink);
+    border-block-end-color: var(--line-strong);
+  }
+
+  .nav-link[aria-current='page'] {
+    color: var(--accent-deep);
+    border-block-end-color: var(--accent);
+  }
+
+  .nav-sep {
+    width: 1px;
+    height: 1.1rem;
+    background: var(--line-strong);
+  }
+
+  .lang {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  /* Below ~40rem the wordmark drops its surname and the nav wraps under it. */
+  @media (max-width: 40rem) {
+    .bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+      padding-block: 0.7rem;
+    }
+
+    .nav {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+</style>

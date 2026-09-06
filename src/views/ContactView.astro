@@ -1,0 +1,226 @@
+---
+import type { Locale } from '@/i18n/config';
+import { AFFILIATIONS, PERSON, SOCIALS } from '@/data/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHeader from '@/components/PageHeader.astro';
+import Section from '@/components/Section.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+
+const copy = {
+  metaTitle: { es: 'Contacto', en: 'Contact' },
+  metaDescription: {
+    es: 'Dónde encontrarme: LinkedIn, GitHub, Hazla con Datos y OpenSalud LAB. Consultoría, docencia y colaboración en ciencia de datos aplicada a salud pública.',
+    en: 'Where to find me: LinkedIn, GitHub, Hazla con Datos and OpenSalud LAB. Consulting, teaching and collaboration in data science applied to public health.',
+  },
+  eyebrow: { es: 'Contacto', en: 'Get in touch' },
+  title: { es: 'Conversemos', en: 'Let’s talk' },
+  lede: {
+    es: 'Escribo con frecuencia sobre políticas sanitarias, arquitectura de datos clínicos y gestión de listas de espera. LinkedIn es el canal más directo.',
+    en: 'I write regularly about health policy, clinical data architecture and waiting-list management. LinkedIn is the most direct channel.',
+  },
+  topicsEyebrow: { es: 'Temas', en: 'Topics' },
+  topicsTitle: { es: 'Sobre qué tiene sentido escribirme', en: 'What it makes sense to write to me about' },
+  affiliationsEyebrow: { es: 'Afiliaciones', en: 'Affiliations' },
+  affiliationsTitle: { es: 'Dónde trabajo y enseño', en: 'Where I work and teach' },
+} as const;
+
+const topics: { title: Record<Locale, string>; body: Record<Locale, string> }[] = [
+  {
+    title: {
+      es: 'Analítica y IA en sistemas públicos de salud',
+      en: 'Analytics and AI in public health systems',
+    },
+    body: {
+      es: 'Listas de espera, detección de anomalías, NLP sobre registros clínicos, record linkage y arquitectura de datos en instituciones con infraestructura limitada.',
+      en: 'Waiting lists, anomaly detection, NLP over clinical records, record linkage and data architecture in institutions with limited infrastructure.',
+    },
+  },
+  {
+    title: {
+      es: 'Formación de equipos clínicos en datos',
+      en: 'Training clinical teams in data',
+    },
+    body: {
+      es: 'Cómo llevar a un equipo clínico desde la planilla hasta SQL, DuckDB y modelos reproducibles, usando sus propios registros en lugar de datasets de ejemplo.',
+      en: 'How to take a clinical team from spreadsheets to SQL, DuckDB and reproducible models, using their own records instead of sample datasets.',
+    },
+  },
+  {
+    title: {
+      es: 'Rediseño de procesos asistenciales',
+      en: 'Redesign of care processes',
+    },
+    body: {
+      es: 'Lean Six Sigma, gestión por procesos y modelos de trazabilidad de pacientes, en particular en rutas oncológicas y flujos prequirúrgicos.',
+      en: 'Lean Six Sigma, process management and patient traceability models, particularly in oncology pathways and pre-surgical flows.',
+    },
+  },
+  {
+    title: {
+      es: 'Charlas, docencia y prensa',
+      en: 'Talks, teaching and press',
+    },
+    body: {
+      es: 'Ponencias en congresos, clases de postgrado y entrevistas sobre transformación digital del sector salud en Chile y la región.',
+      en: 'Conference talks, postgraduate teaching and interviews on digital transformation of the health sector in Chile and the wider region.',
+    },
+  },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  routeKey="contact"
+  title={copy.metaTitle[lang]}
+  description={copy.metaDescription[lang]}
+>
+  <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]} lede={copy.lede[lang]}>
+    <ul class="channels">
+      {
+        SOCIALS.map((social) => (
+          <li>
+            <a class="channel" href={social.href} rel="me noopener" target="_blank">
+              <span class="channel-label">{social.label}</span>
+              <span class="channel-handle mono muted">{social.handle}</span>
+              <span class="channel-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </PageHeader>
+
+  <Section sunk id="temas" eyebrow={copy.topicsEyebrow[lang]} title={copy.topicsTitle[lang]}>
+    <ul class="topics">
+      {
+        topics.map((topic, i) => (
+          <li class="topic">
+            <span class="topic-index mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="topic-title">{topic.title[lang]}</h3>
+            <p class="topic-body">{topic.body[lang]}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="afiliaciones" eyebrow={copy.affiliationsEyebrow[lang]} title={copy.affiliationsTitle[lang]}>
+    <dl class="affiliations">
+      <div>
+        <dt>{PERSON.jobTitle[lang]}</dt>
+        <dd>
+          <a class="link" href={AFFILIATIONS.employer.url} rel="noopener" target="_blank">
+            {AFFILIATIONS.employer.name[lang]}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt>{lang === 'es' ? 'Base' : 'Based in'}</dt>
+        <dd>{PERSON.location[lang]}</dd>
+      </div>
+      <div>
+        <dt>{lang === 'es' ? 'Idiomas' : 'Languages'}</dt>
+        <dd>{lang === 'es' ? 'Español · Inglés' : 'Spanish · English'}</dd>
+      </div>
+    </dl>
+  </Section>
+</BaseLayout>
+
+<style>
+  .channels {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--line-strong);
+    max-width: 40rem;
+  }
+
+  .channel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1.1rem;
+    border-block-end: 1px solid var(--line);
+    text-decoration: none;
+    color: var(--ink);
+    transition: padding-inline-start 0.18s var(--ease), color 0.18s var(--ease);
+  }
+
+  .channel:hover {
+    color: var(--accent-deep);
+    padding-inline-start: 0.35rem;
+  }
+
+  .channel-label {
+    font-family: var(--font-serif);
+    font-size: var(--step-1);
+    font-weight: 600;
+  }
+
+  .channel-handle {
+    font-size: 0.76rem;
+  }
+
+  .channel-arrow {
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .topics {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(2rem, 1.2rem + 3.5vw, 5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .topic-index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .topic-title {
+    margin-block-start: 0.5rem;
+    font-size: var(--step-1);
+    line-height: 1.3;
+  }
+
+  .topic-body {
+    margin-block-start: 0.6rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+    max-width: 34rem;
+  }
+
+  .affiliations {
+    display: grid;
+    gap: 1.5rem clamp(2rem, 1.2rem + 3vw, 4rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    margin: 0;
+  }
+
+  .affiliations dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .affiliations dd {
+    margin: 0.5rem 0 0;
+    font-size: var(--step--1);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+</style>
