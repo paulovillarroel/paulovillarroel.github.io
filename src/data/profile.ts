@@ -1,47 +1,54 @@
 import type { I18n } from '@/i18n/config';
 
-export type Stat = {
-  value: I18n<string>;
-  label: I18n<string>;
-  note: I18n<string>;
+export type ProductionSystem = {
+  name: I18n<string>;
+  what: I18n<string>;
+  cadence: I18n<string>;
+  org: I18n<string>;
 };
 
 /**
- * Headline figures. Every number here is sourced from the documented career
- * record; ranges that were never published are described qualitatively instead.
+ * What is running right now. This replaced a row of headline figures: the
+ * numbers came from different projects and years, so each needed a footnote to
+ * mean anything, which is the sign that they were decorating rather than
+ * informing.
  */
-export const HERO_STATS: Stat[] = [
+export const PRODUCTION_SYSTEMS: ProductionSystem[] = [
   {
-    value: { es: '20+', en: '20+' },
-    label: { es: 'años en salud pública', en: 'years in public health' },
-    note: {
-      es: 'Desde turnos de urgencia y ambulancias hasta la arquitectura analítica ministerial.',
-      en: 'From emergency shifts and ambulances to ministry-scale analytics architecture.',
+    name: {
+      es: 'Detección de sospecha oncológica en listas quirúrgicas',
+      en: 'Cancer suspicion detection in surgical waiting lists',
     },
+    what: {
+      es: 'Clasifica las derivaciones en texto libre y deriva los casos sospechosos e indeterminados a auditoría clínica médica.',
+      en: 'Classifies free-text referrals and routes suspicious and indeterminate cases to medical clinical audit.',
+    },
+    cadence: { es: 'Semanal, desde 2025', en: 'Weekly, since 2025' },
+    org: { es: 'MINSAL', en: 'Ministry of Health' },
   },
   {
-    value: { es: '6.000+', en: '6,000+' },
-    label: { es: 'pacientes trazados', en: 'patients tracked' },
-    note: {
-      es: 'Cohorte oncológica bajo seguimiento activo en el Hospital Padre Hurtado (2014–2018).',
-      en: 'Cancer cohort under active follow-up at Hospital Padre Hurtado (2014–2018).',
+    name: {
+      es: 'Detección de anomalías en el Registro Nacional de Listas de Espera',
+      en: 'Anomaly detection in the National Waiting List Registry',
     },
+    what: {
+      es: 'Vigila volumen, permanencia, variabilidad entre servicios y justificaciones de egreso, y notifica a los equipos de gestión local.',
+      en: 'Monitors volume, time on list, variance between services and discharge justifications, then notifies local management teams.',
+    },
+    cadence: { es: 'Mensual, desde 2023', en: 'Monthly, since 2023' },
+    org: { es: 'MINSAL', en: 'Ministry of Health' },
   },
   {
-    value: { es: '13 días', en: '13 days' },
-    label: { es: 'a primera consulta', en: 'to first specialist visit' },
-    note: {
-      es: 'Tiempo de acceso alcanzado por el modelo de trazabilidad oncológica.',
-      en: 'Access time reached by the oncology traceability model.',
+    name: {
+      es: 'Deduplicación probabilística de identidades',
+      en: 'Probabilistic identity deduplication',
     },
-  },
-  {
-    value: { es: '91,6 %', en: '91.6 %' },
-    label: { es: 'de sensibilidad', en: 'sensitivity' },
-    note: {
-      es: 'Modelo de detección de cáncer oculto en listas quirúrgicas, validado sobre 15.032 casos revisados por especialistas.',
-      en: 'Model detecting hidden cancer in surgical waiting lists, validated on 15,032 specialist-reviewed cases.',
+    what: {
+      es: 'Unifica los eventos asistenciales de personas registradas bajo identificadores transitorios, corrigiendo el sobredimensionamiento de la demanda.',
+      en: 'Merges care events for people registered under temporary identifiers, correcting overstated demand.',
     },
+    cadence: { es: 'En operación', en: 'In operation' },
+    org: { es: 'MINSAL', en: 'Ministry of Health' },
   },
 ];
 

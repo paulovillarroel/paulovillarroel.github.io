@@ -19,7 +19,7 @@ npm run preview   # sirve dist/ localmente
 src/
   data/          Contenido. Cada campo es bilingüe: { es, en }
     site.ts        Identidad, redes, afiliaciones
-    profile.ts     Cifras, áreas de trabajo, narrativa, conclusiones
+    profile.ts     Sistemas en producción, áreas de trabajo, narrativa, conclusiones
     projects.ts    Proyectos técnicos + programa ministerial 2026
     career.ts      Cronología, formación, reconocimientos
     teaching.ts    Iniciativas, temario, ponencias

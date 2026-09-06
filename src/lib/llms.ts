@@ -1,6 +1,6 @@
 import { ROUTES, type Locale } from '@/i18n/config';
 import { PERSON, SITE, SOCIALS, AFFILIATIONS } from '@/data/site';
-import { CAREER_NARRATIVE, CONCLUSIONS, HERO_STATS, PILLARS } from '@/data/profile';
+import { CAREER_NARRATIVE, CONCLUSIONS, PILLARS, PRODUCTION_SYSTEMS } from '@/data/profile';
 import { PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
 import { EDUCATION, RECOGNITION, TIMELINE } from '@/data/career';
 import { APPEARANCES, CURRICULUM, VENTURES } from '@/data/teaching';
@@ -14,8 +14,8 @@ const abs = (site: URL | undefined, path: string) => new URL(path, site ?? new U
  */
 const PAGE_NOTES: Record<keyof typeof ROUTES, Record<Locale, string>> = {
   home: {
-    es: 'Resumen del perfil, cifras principales, las cuatro áreas de trabajo y el programa ministerial vigente.',
-    en: 'Profile summary, headline figures, the four areas of work and the current ministry programme.',
+    es: 'Resumen del perfil, los sistemas actualmente en producción, las cuatro áreas de trabajo y el programa ministerial vigente.',
+    en: 'Profile summary, the systems currently in production, the four areas of work and the current ministry programme.',
   },
   career: {
     es: 'Narrativa de carrera 2004–2026, cronología de hitos verificables, formación académica y reconocimientos.',
@@ -43,7 +43,7 @@ const HEADINGS = {
   pages: { es: 'Páginas', en: 'Pages' },
   pagesEn: { es: 'Páginas en inglés', en: 'Pages in Spanish' },
   profile: { es: 'Perfil', en: 'Profile' },
-  figures: { es: 'Cifras principales', en: 'Headline figures' },
+  running: { es: 'Sistemas en producción', en: 'Systems in production' },
   areas: { es: 'Áreas de trabajo', en: 'Areas of work' },
   projects: { es: 'Proyectos', en: 'Projects' },
   programme: { es: 'Programa estratégico 2026', en: 'Strategic programme 2026' },
@@ -139,9 +139,9 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
   out.push(`${lang === 'es' ? 'URL canónica' : 'Canonical URL'}: ${abs(site, ROUTES.home[lang])}`);
   out.push(`${lang === 'es' ? 'Última actualización' : 'Last updated'}: ${SITE.updated}`, '');
 
-  out.push(`## ${h('figures')}`, '');
-  for (const stat of HERO_STATS) {
-    out.push(`- ${stat.value[lang]} — ${stat.label[lang]}. ${stat.note[lang]}`);
+  out.push(`## ${h('running')}`, '');
+  for (const system of PRODUCTION_SYSTEMS) {
+    out.push(`- ${system.name[lang]} — ${system.org[lang]}, ${system.cadence[lang]}. ${system.what[lang]}`);
   }
   out.push('');
 

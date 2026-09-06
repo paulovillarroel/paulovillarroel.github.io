@@ -37,14 +37,14 @@ const variants = {
   'og-es': {
     eyebrow: 'MINISTERIO DE SALUD DE CHILE',
     name: 'Paulo Villarroel Tapia',
-    role: ['Enfermero, científico de datos y arquitecto', 'analítico en salud pública.'],
-    facts: '20+ años  ·  6.000+ pacientes trazados  ·  Top 5 IA del Estado',
+    role: ['Arquitecto de soluciones de datos', 'para sistemas públicos de salud.'],
+    facts: 'Listas de espera  ·  Detección oncológica  ·  Interoperabilidad',
   },
   'og-en': {
     eyebrow: 'CHILEAN MINISTRY OF HEALTH',
     name: 'Paulo Villarroel Tapia',
-    role: ['Nurse, data scientist and analytics architect', 'in public health.'],
-    facts: '20+ years  ·  6,000+ patients tracked  ·  Top 5 State AI',
+    role: ['Data solutions architect', 'for public health systems.'],
+    facts: 'Waiting lists  ·  Cancer detection  ·  Health interoperability',
   },
 };
 
