@@ -5,6 +5,8 @@ export type ProductionSystem = {
   what: I18n<string>;
   cadence: I18n<string>;
   org: I18n<string>;
+  /** The methods the system is built on, shown as a compact technical line. */
+  methods: string[];
 };
 
 /**
@@ -20,11 +22,12 @@ export const PRODUCTION_SYSTEMS: ProductionSystem[] = [
       en: 'Cancer suspicion detection in surgical waiting lists',
     },
     what: {
-      es: 'Clasifica las derivaciones en texto libre y deriva los casos sospechosos e indeterminados a auditoría clínica médica.',
-      en: 'Classifies free-text referrals and routes suspicious and indeterminate cases to medical clinical audit.',
+      es: 'Clasifica ~475.000 diagnósticos por corte y deriva los casos sospechosos e indeterminados a auditoría clínica médica. Un modelo de lenguaje afinado añade el órgano afectado en código CIE-O3.',
+      en: 'Classifies ~475,000 diagnoses per cut and routes suspicious and indeterminate cases to medical clinical audit. A fine-tuned language model adds the affected organ in ICD-O3 code.',
     },
-    cadence: { es: 'Semanal, desde 2025', en: 'Weekly, since 2025' },
+    cadence: { es: 'Corte mensual y canal semanal', en: 'Monthly cut and weekly channel' },
     org: { es: 'MINSAL', en: 'Ministry of Health' },
+    methods: ['NLP', 'Embeddings', 'XGBoost', 'Llama 3.1 · QLoRA', 'Human-in-the-loop'],
   },
   {
     name: {
@@ -37,6 +40,7 @@ export const PRODUCTION_SYSTEMS: ProductionSystem[] = [
     },
     cadence: { es: 'Mensual, desde 2023', en: 'Monthly, since 2023' },
     org: { es: 'MINSAL', en: 'Ministry of Health' },
+    methods: ['Detección de anomalías', 'Aprendizaje no supervisado'],
   },
   {
     name: {
@@ -44,11 +48,12 @@ export const PRODUCTION_SYSTEMS: ProductionSystem[] = [
       en: 'Probabilistic identity deduplication',
     },
     what: {
-      es: 'Unifica los eventos asistenciales de personas registradas bajo identificadores transitorios, corrigiendo el sobredimensionamiento de la demanda.',
-      en: 'Merges care events for people registered under temporary identifiers, correcting overstated demand.',
+      es: 'Resuelve la misma persona registrada con distintos identificadores en 2,1 millones de registros, corrigiendo el sobredimensionamiento de la demanda.',
+      en: 'Resolves the same person registered under different identifiers across 2.1 million records, correcting overstated demand.',
     },
     cadence: { es: 'En operación', en: 'In operation' },
     org: { es: 'MINSAL', en: 'Ministry of Health' },
+    methods: ['Record linkage', 'Fellegi-Sunter', 'Splink', 'DuckDB'],
   },
 ];
 
@@ -64,14 +69,14 @@ export const PILLARS: Pillar[] = [
   {
     id: 'clinical-analytics',
     title: {
-      es: 'Analítica nacida en la clínica',
-      en: 'Analytics born at the bedside',
+      es: 'Ciencia de datos nacida en la práctica clínica',
+      en: 'Data science born in clinical practice',
     },
     body: {
       es: 'Los modelos que funcionan no se diseñan desde la abstracción de los datos, sino desde las fallas operacionales del cuidado directo. Veinte años de ejercicio asistencial definen qué vale la pena predecir.',
-      en: 'Models that work are not designed from the abstraction of data, but from the operational failures of direct care. Twenty years at the bedside decide what is worth predicting.',
+      en: 'Models that work are not designed from the abstraction of data, but from the operational failures of direct care. Twenty years of clinical practice decide what is worth predicting.',
     },
-    keywords: ['GES', 'oncología', 'listas de espera', 'trazabilidad'],
+    keywords: ['analítica clínica', 'oncología', 'listas de espera', 'GES'],
   },
   {
     id: 'ai-public-sector',
@@ -114,12 +119,12 @@ export const PILLARS: Pillar[] = [
 /** Narrative shown on the career page, before the timeline. */
 export const CAREER_NARRATIVE: I18n<string[]> = {
   es: [
-    'Mi trayectoria empezó donde empieza el dato: en la cama del paciente. Me titulé de enfermero en la Universidad de Chile y pasé años en unidades de hospitalización, turnos de urgencia y atención prehospitalaria en ambulancias. Ese periodo me dejó algo que ningún curso enseña: una comprensión directa de cómo interactúan el usuario y la burocracia hospitalaria, dónde se atascan los cuidados y cuánta complejidad esconde el registro clínico.',
+    'Mi trayectoria empezó donde empieza el dato: en la práctica clínica. Me titulé de enfermero en la Universidad de Chile y pasé años en unidades de hospitalización, turnos de urgencia y atención prehospitalaria en ambulancias. Ese periodo me dejó algo que ningún curso enseña: una comprensión directa de cómo interactúan el usuario y la burocracia hospitalaria, dónde se atascan los cuidados y cuánta complejidad esconde el registro clínico.',
     'A diferencia de las aproximaciones que abordan los datos sanitarios de forma puramente abstracta o computacional, mi trabajo técnico se construyó desde las fallas operacionales del cuidado directo. La transición fue deliberada: primero la gestión asistencial y la excelencia operacional, con una certificación Lean Six Sigma Black Belt en la Universidad de Chile y postítulos en Gerencia Pública, Control de Gestión Gerencial, Gestión de Procesos de Negocios y Alta Gerencia de Instituciones de Salud. Después, ingeniería y análisis predictivo, con estudios de ciencias de la computación en la Pontificia Universidad Católica de Chile y la malla completa de un MBA con especialización en Salud.',
     'Esa secuencia curricular explica el recorrido: del rediseño micro-operativo de procesos clínicos a la ciencia de datos aplicada, la arquitectura analítica ministerial y el modelamiento predictivo a escala nacional. La constante en todo el camino ha sido la misma: buscar los puntos ciegos del sistema, ahí donde los pacientes desaparecen dentro de la burocracia.',
   ],
   en: [
-    'My career started where the data starts: at the patient’s bedside. I qualified as a nurse at the University of Chile and spent years in inpatient units, emergency shifts and pre-hospital ambulance care. That period taught me something no course does: a first-hand understanding of how patients collide with hospital bureaucracy, where care gets stuck, and how much complexity hides inside a clinical record.',
+    'My career started where the data starts: in clinical practice. I qualified as a nurse at the University of Chile and spent years in inpatient units, emergency shifts and pre-hospital ambulance care. That period taught me something no course does: a first-hand understanding of how patients collide with hospital bureaucracy, where care gets stuck, and how much complexity hides inside a clinical record.',
     'Unlike approaches that treat health data as a purely abstract or computational object, my technical work was built from the operational failures of direct care. The transition was deliberate: first care management and operational excellence, with a Lean Six Sigma Black Belt certification at the University of Chile and postgraduate studies in Public Management, Managerial Control, Business Process Management and Senior Management of Health Institutions. Then engineering and predictive analysis, with computer science studies at the Pontifical Catholic University of Chile and the full curriculum of an MBA specialising in Health.',
     'That sequence explains the path: from micro-operational redesign of clinical processes to applied data science, ministry-level analytics architecture and predictive modelling at national scale. One constant runs through all of it: hunting for the system’s blind spots, the places where patients disappear inside the bureaucracy.',
   ],

@@ -11,17 +11,17 @@ export const PERSON = {
   name: 'Paulo Villarroel Tapia',
   shortName: 'Paulo Villarroel',
   jobTitle: {
-    es: 'Arquitecto de soluciones de datos en salud pública',
-    en: 'Data solutions architect in public health',
+    es: 'Científico de datos y arquitecto de inteligencia artificial en salud pública',
+    en: 'Health data scientist and artificial intelligence architect',
   } satisfies I18n<string>,
   headline: {
-    es: 'Arquitecto de soluciones de datos para sistemas públicos de salud.',
-    en: 'Data solutions architect for public health systems.',
+    es: 'Arquitecto de inteligencia artificial y ciencia de datos en salud pública.',
+    en: 'Artificial intelligence and data science architect for public health.',
   } satisfies I18n<string>,
   /** One-sentence summary reused in meta descriptions and JSON-LD. */
   summary: {
-    es: 'Diseño y opero los sistemas analíticos que buscan a los pacientes que el sistema pierde: listas de espera, sospecha oncológica encubierta, identidades fragmentadas. Todo sobre tecnología abierta y hardware convencional, para que sea replicable en cualquier sistema de salud con infraestructura restringida.',
-    en: 'I design and run the analytical systems that look for the patients a health system loses: waiting lists, hidden cancer suspicion, fragmented identities. All of it on open technology and ordinary hardware, so it can be replicated in any health system working under infrastructure constraints.',
+    es: 'Diseño y opero los modelos de inteligencia artificial y los sistemas de analítica avanzada que buscan a los pacientes que el sistema de salud pierde: listas de espera, sospecha oncológica encubierta, identidades fragmentadas. Todo sobre tecnología abierta y hardware convencional, para que sea replicable en cualquier sistema de salud con infraestructura restringida.',
+    en: 'I design and run the artificial-intelligence models and advanced analytics systems that look for the patients a health system loses: waiting lists, hidden cancer suspicion, fragmented identities. All of it on open technology and ordinary hardware, so it can be replicated in any health system working under infrastructure constraints.',
   } satisfies I18n<string>,
   location: {
     es: 'Santiago, Chile',

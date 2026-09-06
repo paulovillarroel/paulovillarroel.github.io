@@ -1,7 +1,7 @@
 import { ROUTES, type Locale } from '@/i18n/config';
 import { PERSON, SITE, SOCIALS, AFFILIATIONS } from '@/data/site';
 import { CAREER_NARRATIVE, CONCLUSIONS, PILLARS, PRODUCTION_SYSTEMS } from '@/data/profile';
-import { PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
+import { METHOD_GROUPS, PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
 import { EDUCATION, RECOGNITION, TIMELINE } from '@/data/career';
 import { APPEARANCES, CURRICULUM, VENTURES } from '@/data/teaching';
 import { COHORT_ARTEFACTS, ENGINEERING_CASES, POSITIONS } from '@/data/notes';
@@ -22,8 +22,8 @@ const PAGE_NOTES: Record<keyof typeof ROUTES, Record<Locale, string>> = {
     en: 'Career narrative 2004–2026, chronology of verifiable milestones, academic background and recognition.',
   },
   work: {
-    es: 'Cinco proyectos técnicos en detalle: contexto, enfoque metodológico, resultados y stack de cada uno.',
-    en: 'Five technical projects in detail: context, methodological approach, outcomes and stack for each.',
+    es: 'Superficie técnica por disciplina y ocho sistemas de inteligencia artificial y analítica avanzada en detalle: contexto, enfoque metodológico, evaluación y stack de cada uno.',
+    en: 'Technical surface by discipline plus eight artificial-intelligence and advanced-analytics systems in detail: context, methodological approach, evaluation and stack for each.',
   },
   notes: {
     es: 'Casos de ingeniería resueltos con su razonamiento completo, y posiciones técnicas sobre sesgo de supervivencia en listas de espera, interoperabilidad semántica y gobernanza de datos sensibles de salud.',
@@ -50,6 +50,7 @@ const HEADINGS = {
   timeline: { es: 'Cronología 2004–2026', en: 'Chronology 2004–2026' },
   education: { es: 'Formación', en: 'Education' },
   recognition: { es: 'Reconocimientos', en: 'Recognition' },
+  methods: { es: 'Superficie técnica', en: 'Technical surface' },
   cases: { es: 'Casos de ingeniería resueltos', en: 'Solved engineering cases' },
   positions: { es: 'Doctrina técnica', en: 'Technical positions' },
   artefacts: { es: 'Qué construyen las cohortes', en: 'What the cohorts build' },
@@ -151,6 +152,13 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
   out.push(`## ${h('areas')}`, '');
   for (const pillar of PILLARS) {
     out.push(`### ${pillar.title[lang]}`, '', pillar.body[lang], '', `${lang === 'es' ? 'Claves' : 'Keywords'}: ${pillar.keywords.join(', ')}`, '');
+  }
+
+  out.push(`## ${h('methods')}`, '');
+  for (const group of METHOD_GROUPS) {
+    out.push(`### ${group.title[lang]}`, '');
+    for (const item of group.items) out.push(`- ${item}`);
+    out.push('');
   }
 
   out.push(`## ${h('projects')}`, '');

@@ -23,16 +23,16 @@ const copy = {
     en: 'Paulo Villarroel Tapia — Public health data science',
   },
   metaDescription: {
-    es: 'Enfermero y científico de datos del Ministerio de Salud de Chile. Más de 20 años entre la atención clínica directa y el diseño de modelos de IA para listas de espera, oncología e interoperabilidad sanitaria.',
-    en: 'Nurse and data scientist at the Chilean Ministry of Health. Over 20 years spanning direct clinical care and the design of AI models for waiting lists, oncology and health interoperability.',
+    es: 'Científico de datos y arquitecto de inteligencia artificial en el Ministerio de Salud de Chile. Modelos de IA, analítica avanzada y procesamiento de lenguaje natural sobre listas de espera, detección oncológica e interoperabilidad sanitaria.',
+    en: 'Health data scientist and artificial intelligence architect at the Chilean Ministry of Health. AI models, advanced analytics and natural language processing over waiting lists, cancer detection and health interoperability.',
   },
   eyebrow: {
     es: 'Ministerio de Salud de Chile · Oficina de Inteligencia y Gestión Estratégica en Salud',
     en: 'Chilean Ministry of Health · Office of Intelligence and Strategic Health Management',
   },
   heroKicker: {
-    es: 'Enfermero de origen. Veinte años entre la cama del paciente y el modelo en producción.',
-    en: 'A nurse by training. Twenty years between the patient’s bedside and the model in production.',
+    es: 'Enfermero de origen. Veinte años entre la práctica clínica y el modelo en producción.',
+    en: 'A nurse by training. Twenty years between clinical practice and the model in production.',
   },
   runningLabel: { es: 'En producción', en: 'In production' },
   nowTitle: { es: 'En qué trabajo ahora', en: 'What I am working on now' },
@@ -101,6 +101,9 @@ const copy = {
                 <p class="system-meta mono">
                   {system.org[lang]} · {system.cadence[lang]}
                 </p>
+                <ul class="system-methods">
+                  {system.methods.map((method) => <li class="chip mono">{method}</li>)}
+                </ul>
               </li>
             ))
           }
@@ -329,13 +332,33 @@ const copy = {
     letter-spacing: 0.04em;
   }
 
+  .system-methods {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 0.7rem 0 0;
+  }
+
+  .chip {
+    padding: 0.18rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink-3);
+    font-size: 0.7rem;
+  }
+
   @media (max-width: 52rem) {
     .system {
       grid-template-columns: 1fr;
     }
 
     .system-what,
-    .system-meta {
+    .system-meta,
+    .system-methods {
       grid-column: 1;
       grid-row: auto;
     }

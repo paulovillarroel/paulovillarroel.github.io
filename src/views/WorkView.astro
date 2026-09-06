@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '@/i18n/config';
 import { ui } from '@/i18n/ui';
-import { PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
+import { METHOD_GROUPS, PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import Section from '@/components/Section.astro';
@@ -15,8 +15,8 @@ const { lang } = Astro.props;
 const copy = {
   metaTitle: { es: 'Proyectos', en: 'Projects' },
   metaDescription: {
-    es: 'Modelos de IA para listas de espera, detección de cáncer oculto en demanda quirúrgica, record linkage nacional y arquitectura analítica frugal con DuckDB en el Ministerio de Salud de Chile.',
-    en: 'AI models for waiting lists, detection of hidden cancer in surgical demand, national record linkage and frugal analytics architecture with DuckDB at the Chilean Ministry of Health.',
+    es: 'Inteligencia artificial y analítica avanzada en el Ministerio de Salud de Chile: clasificación oncológica con NLP y gradient boosting, modelos de lenguaje afinados con QLoRA, detección de anomalías, record linkage probabilístico y anonimización con k-anonimidad.',
+    en: 'Artificial intelligence and advanced analytics at the Chilean Ministry of Health: cancer classification with NLP and gradient boosting, language models fine-tuned with QLoRA, anomaly detection, probabilistic record linkage and k-anonymity anonymisation.',
   },
   eyebrow: { es: 'Trabajo técnico', en: 'Technical work' },
   title: {
@@ -24,11 +24,17 @@ const copy = {
     en: 'Systems that look for the patients the system loses',
   },
   lede: {
-    es: 'Cinco proyectos, doce años y una sola pregunta: dónde están las personas que la burocracia sanitaria dejó de contar. Las herramientas cambiaron —de una etiqueta fluorescente sobre una ficha de papel a un modelo de lenguaje sobre millones de derivaciones—, el objetivo no.',
-    en: 'Five projects, twelve years and a single question: where are the people that health bureaucracy stopped counting. The tools changed — from a fluorescent sticker on a paper chart to a language model over millions of referrals — the goal did not.',
+    es: 'Doce años y una sola pregunta: dónde están las personas que la burocracia sanitaria dejó de contar. Las herramientas cambiaron —de una etiqueta fluorescente sobre una ficha de papel a un modelo de lenguaje afinado sobre millones de derivaciones—, el objetivo no.',
+    en: 'Twelve years and a single question: where are the people that health bureaucracy stopped counting. The tools changed — from a fluorescent sticker on a paper chart to a fine-tuned language model over millions of referrals — the goal did not.',
   },
   indexTitle: { es: 'Índice', en: 'Index' },
   nowEyebrow: { es: 'En curso', en: 'In progress' },
+  methodsEyebrow: { es: 'Métodos', en: 'Methods' },
+  methodsTitle: { es: 'Superficie técnica', en: 'Technical surface' },
+  methodsLede: {
+    es: 'Cada método de esta lista está en uso en alguno de los sistemas que siguen. No es un inventario de familiaridad.',
+    en: 'Every method listed here is in use in one of the systems below. It is not a familiarity inventory.',
+  },
   evaluation: { es: 'Evaluación', en: 'Evaluation' },
   colParam: { es: 'Parámetro', en: 'Parameter' },
   colValue: { es: 'Rendimiento', en: 'Result' },
@@ -45,6 +51,13 @@ const copy = {
   <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]} lede={copy.lede[lang]}>
     <nav class="index" aria-label={copy.indexTitle[lang]}>
       <ol>
+        <li>
+          <a class="index-link" href="#metodos">
+            <span class="index-num mono">00</span>
+            <span class="index-text">{copy.methodsTitle[lang]}</span>
+            <span class="index-year mono">{copy.methodsEyebrow[lang]}</span>
+          </a>
+        </li>
         {
           PROJECTS.map((project, i) => (
             <li>
@@ -60,9 +73,30 @@ const copy = {
     </nav>
   </PageHeader>
 
+  <Section
+    sunk
+    id="metodos"
+    eyebrow={copy.methodsEyebrow[lang]}
+    title={copy.methodsTitle[lang]}
+    lede={copy.methodsLede[lang]}
+  >
+    <div class="methods">
+      {
+        METHOD_GROUPS.map((group) => (
+          <section class="method-group">
+            <h3 class="method-title">{group.title[lang]}</h3>
+            <ul class="method-list">
+              {group.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </Section>
+
   {
     PROJECTS.map((project, i) => (
-      <Section sunk={i % 2 === 1} id={project.id}>
+      <Section sunk={i % 2 === 0} id={project.id}>
         <article class="project">
           <header class="project-head">
             <p class="eyebrow">
@@ -276,6 +310,49 @@ const copy = {
   .block-list.outcome li::before {
     background: var(--accent);
     height: 2px;
+  }
+
+  /* ---- Methods ---- */
+  .methods {
+    display: grid;
+    gap: clamp(1.75rem, 1.3rem + 2vw, 2.75rem) clamp(1.75rem, 1.2rem + 2.5vw, 3.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  }
+
+  .method-title {
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.35;
+    padding-block-end: 0.8rem;
+    border-block-end: 2px solid var(--accent);
+  }
+
+  .method-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.9rem 0 0;
+    display: grid;
+    gap: 0.55rem;
+    font-size: var(--step--1);
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .method-list li {
+    position: relative;
+    padding-inline-start: 0.95rem;
+  }
+
+  .method-list li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.6em;
+    width: 0.4rem;
+    height: 1px;
+    background: var(--line-strong);
   }
 
   /* ---- Evaluation table ---- */
