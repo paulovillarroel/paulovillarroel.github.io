@@ -36,11 +36,11 @@ export const HERO_STATS: Stat[] = [
     },
   },
   {
-    value: { es: 'Top 5', en: 'Top 5' },
-    label: { es: 'del país', en: 'nationwide' },
+    value: { es: '91,6 %', en: '91.6 %' },
+    label: { es: 'de sensibilidad', en: 'sensitivity' },
     note: {
-      es: 'Entre los cinco mejores hospitales públicos de Chile en gestión oncológica.',
-      en: 'Among the five best public hospitals in Chile for cancer management.',
+      es: 'Modelo de detección de cáncer oculto en listas quirúrgicas, validado sobre 15.032 casos revisados por especialistas.',
+      en: 'Model detecting hidden cancer in surgical waiting lists, validated on 15,032 specialist-reviewed cases.',
     },
   },
 ];

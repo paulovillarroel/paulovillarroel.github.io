@@ -12,6 +12,12 @@ export type Project = {
   context: I18n<string>;
   approach: I18n<string[]>;
   outcome: I18n<string[]>;
+  /** Published evaluation results, rendered as a table when present. */
+  metrics?: {
+    param: I18n<string>;
+    value: I18n<string>;
+    implication: I18n<string>;
+  }[];
   stack: string[];
 };
 
@@ -139,8 +145,8 @@ export const PROJECTS: Project[] = [
       en: 'Algorithmic detection of hidden cancer inside surgical waiting lists',
     },
     tagline: {
-      es: 'NLP, embeddings y árboles de gradiente para rescatar sospechas de cáncer mal clasificadas como cirugía electiva no priorizada.',
-      en: 'NLP, embeddings and gradient-boosted trees to rescue cancer suspicions misfiled as non-prioritised elective surgery.',
+      es: 'NLP, embeddings y árboles de gradiente para rescatar sospechas de cáncer mal clasificadas como cirugía electiva. 91,6 % de sensibilidad sobre 15.032 casos validados clínicamente.',
+      en: 'NLP, embeddings and gradient-boosted trees to rescue cancer suspicions misfiled as elective surgery. 91.6 % sensitivity over 15,032 clinically validated cases.',
     },
     context: {
       es: 'Un problema frecuente en la gestión de la demanda quirúrgica: pacientes con sospecha o evidencia de patología oncológica quedan clasificados erróneamente en las listas de espera como cirugías generales o electivas no priorizadas, y pierden la prioridad que les corresponde.',
@@ -162,16 +168,64 @@ export const PROJECTS: Project[] = [
     },
     outcome: {
       es: [
-        'Evaluado sobre una cohorte validada clínicamente mediante revisión experta individualizada, con métricas de sensibilidad, especificidad, precisión y valor predictivo negativo medidas caso a caso.',
-        'Alta capacidad de rescate de patologías neoplásicas encubiertas en la demanda no priorizada, con mínima interferencia sobre las rutas quirúrgicas electivas.',
+        'Evaluado sobre un corte de 15.032 casos validados individualmente por especialistas clínicos: sensibilidad 91,6 %, especificidad 97,9 %, precisión (VPP) 82,8 % y valor predictivo negativo 99,0 %.',
         'Integrado en la rutina ministerial: pasó de una periodicidad mensual a un esquema semanal permanente desde 2025.',
       ],
       en: [
-        'Evaluated against a clinically validated cohort reviewed case by case by specialists, with sensitivity, specificity, precision and negative predictive value measured individually.',
-        'High recovery rate for cancer hidden inside non-prioritised demand, with minimal interference on elective surgical pathways.',
+        'Evaluated on a cut of 15,032 cases individually validated by clinical specialists: 91.6 % sensitivity, 97.9 % specificity, 82.8 % precision (PPV) and 99.0 % negative predictive value.',
         'Embedded in ministry routine: moved from a monthly cadence to a permanent weekly schedule from 2025.',
       ],
     },
+    metrics: [
+      {
+        param: { es: 'Sensibilidad', en: 'Sensitivity' },
+        value: { es: '91,6 %', en: '91.6 %' },
+        implication: {
+          es: 'Alta capacidad de rescate de patologías neoplásicas encubiertas en la demanda no priorizada.',
+          en: 'High recovery rate for cancer hidden inside non-prioritised demand.',
+        },
+      },
+      {
+        param: { es: 'Especificidad', en: 'Specificity' },
+        value: { es: '97,9 %', en: '97.9 %' },
+        implication: {
+          es: 'Mínima interferencia y bajo porcentaje de sobrediagnóstico sobre las rutas quirúrgicas electivas.',
+          en: 'Minimal interference and a low over-diagnosis rate on elective surgical pathways.',
+        },
+      },
+      {
+        param: { es: 'Precisión (VPP)', en: 'Precision (PPV)' },
+        value: { es: '82,8 %', en: '82.8 %' },
+        implication: {
+          es: 'Confiabilidad operativa para el equipo médico de auditoría que evalúa las alertas emitidas.',
+          en: 'Operational reliability for the medical audit team reviewing the alerts raised.',
+        },
+      },
+      {
+        param: { es: 'Valor predictivo negativo', en: 'Negative predictive value' },
+        value: { es: '99,0 %', en: '99.0 %' },
+        implication: {
+          es: 'Certeza analítica para descartar criterios de alarma oncológica en el lote evaluado.',
+          en: 'Analytical confidence when ruling out cancer alarm criteria in the evaluated batch.',
+        },
+      },
+      {
+        param: { es: 'Registro de validación', en: 'Validation record' },
+        value: { es: '15.032 casos', en: '15,032 cases' },
+        implication: {
+          es: 'Cohorte validada clínicamente mediante revisión experta individualizada.',
+          en: 'Cohort clinically validated through individual expert review.',
+        },
+      },
+      {
+        param: { es: 'Frecuencia de ejecución', en: 'Run frequency' },
+        value: { es: 'Semanal (desde 2025)', en: 'Weekly (since 2025)' },
+        implication: {
+          es: 'Trazabilidad regular e integrada en los sistemas de gestión de la demanda quirúrgica.',
+          en: 'Regular traceability, integrated into surgical demand management systems.',
+        },
+      },
+    ],
     stack: ['NLP', 'Embeddings', 'GBDT', 'CIE-10', 'Regex', 'Human-in-the-loop'],
   },
   {

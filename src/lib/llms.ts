@@ -166,6 +166,13 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
     out.push(`${h('outcome')}:`);
     for (const item of project.outcome[lang]) out.push(`- ${item}`);
     out.push('');
+    if (project.metrics) {
+      out.push(`${lang === 'es' ? 'Evaluación' : 'Evaluation'}:`);
+      for (const metric of project.metrics) {
+        out.push(`- ${metric.param[lang]}: ${metric.value[lang]}. ${metric.implication[lang]}`);
+      }
+      out.push('');
+    }
     out.push(`${h('stack')}: ${project.stack.join(', ')}`, '');
   }
 
