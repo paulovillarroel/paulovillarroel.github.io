@@ -157,26 +157,25 @@ export const POSITIONS: Position[] = [
   },
 ];
 
-/** Concrete exercises the training cohorts actually build. */
+/**
+ * Exercises the cohorts build. Everything here runs on open health data —
+ * REM, DEIS, datos.gob.cl — which is real administrative data, not sample sets.
+ */
 export const COHORT_ARTEFACTS: I18n<string>[] = [
   {
     es: 'Ocupación de camas hospitalarias a partir de los datos abiertos del REM, en SQL sobre DuckDB.',
     en: 'Hospital bed occupancy from open REM data, in SQL over DuckDB.',
   },
   {
-    es: 'Normalización de diagnósticos CIE-10 escritos en texto libre, con expresiones regulares sanitarias.',
-    en: 'Normalising free-text ICD-10 diagnoses with health-specific regular expressions.',
+    es: 'Normalización de diagnósticos y prestaciones escritos en texto libre, con expresiones regulares.',
+    en: 'Normalising free-text diagnoses and procedures with regular expressions.',
   },
   {
-    es: 'Series de presión arterial y tablas administrativas depuradas desde planillas clínicas reales.',
-    en: 'Blood-pressure series and administrative tables cleaned from real clinical spreadsheets.',
+    es: 'Procesamiento de tablas de millones de atenciones en un computador personal, sin servidor.',
+    en: 'Processing tables of millions of care episodes on a personal computer, with no server.',
   },
   {
-    es: 'Curvas de sobrevida y riesgos proporcionales sobre cohortes clínicas, con interpretación de la incertidumbre.',
-    en: 'Survival curves and proportional hazards over clinical cohorts, including how to read the uncertainty.',
-  },
-  {
-    es: 'Extracción de entidades clínicas en epicrisis, con pseudoanonimización previa al procesamiento.',
-    en: 'Clinical entity extraction from discharge summaries, with pseudonymisation applied before processing.',
+    es: 'Modelamiento estadístico y análisis de supervivencia sobre cohortes construidas desde datos abiertos.',
+    en: 'Statistical modelling and survival analysis over cohorts built from open data.',
   },
 ];

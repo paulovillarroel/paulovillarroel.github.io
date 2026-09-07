@@ -37,17 +37,17 @@ export const VENTURES: Venture[] = [
     since: '2024',
     url: 'https://hazlacondatos.com/',
     tagline: {
-      es: 'Material de análisis de datos construido sobre registros clínicos en lugar de casos de mercadotecnia.',
-      en: 'Data analysis material built on clinical records rather than marketing case studies.',
+      es: 'Material de análisis de datos construido sobre datos sanitarios abiertos en lugar de casos de mercadotecnia.',
+      en: 'Data analysis material built on open health data rather than marketing case studies.',
     },
     body: {
       es: [
         'La analítica se enseña casi siempre con ejemplos de mercadotecnia, logística comercial o finanzas. Para el personal sanitario eso introduce una fricción metodológica concreta: el procedimiento puede ser correcto, pero la estructura del dato no se parece a la que manipulan en su trabajo.',
-        'El material de Hazla con Datos se construyó sobre registros clínicos, variables epidemiológicas y conjuntos de datos sanitarios abiertos, de modo que los ejercicios reproduzcan los problemas reales de codificación, calidad y volumen del sector.',
+        'El material de Hazla con Datos se construyó sobre datos sanitarios abiertos —REM, DEIS, datos.gob.cl—, que son registros administrativos reales y no conjuntos de ejemplo: traen los mismos problemas de codificación, calidad y volumen que el personal enfrenta en su trabajo.',
       ],
       en: [
         'Analytics is almost always taught with examples from marketing, commercial logistics or finance. For health staff that introduces a concrete methodological friction: the procedure may be right, but the data structure looks nothing like what they handle at work.',
-        'The Hazla con Datos material was built on clinical records, epidemiological variables and open health datasets, so the exercises reproduce the sector’s real coding, quality and volume problems.',
+        'The Hazla con Datos material was built on open health data — the ministry’s REM and DEIS series and the national open data portal — which are real administrative records, not sample sets: they carry the same coding, quality and volume problems staff face at work.',
       ],
     },
     bullets: { es: [], en: [] },
@@ -105,8 +105,8 @@ export const CURRICULUM: CurriculumPhase[] = [
     },
     tooling: 'R (tidyverse) · Python · Regex',
     outcome: {
-      es: 'Normalización de diagnósticos CIE-10, series de presión arterial y tablas administrativas.',
-      en: 'Normalising ICD-10 diagnoses, blood-pressure series and administrative tables.',
+      es: 'Normalización de diagnósticos CIE-10 y depuración de tablas administrativas de salud.',
+      en: 'Normalising ICD-10 diagnoses and cleaning administrative health tables.',
     },
   },
   {
@@ -141,8 +141,8 @@ export const CURRICULUM: CurriculumPhase[] = [
     },
     tooling: 'Transformers · Docker',
     outcome: {
-      es: 'Extracción de entidades clínicas en epicrisis y resguardo de la confidencialidad del paciente.',
-      en: 'Extracting clinical entities from discharge summaries while protecting patient confidentiality.',
+      es: 'Extracción de entidades desde texto clínico libre y técnicas de resguardo de la confidencialidad.',
+      en: 'Entity extraction from free clinical text, and techniques for protecting confidentiality.',
     },
   },
 ];
