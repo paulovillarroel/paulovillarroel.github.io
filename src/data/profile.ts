@@ -91,10 +91,10 @@ export const PILLARS: Pillar[] = [
     keywords: ['NLP', 'embeddings', 'GBDT', 'human-in-the-loop'],
   },
   {
-    id: 'frugal-engineering',
+    id: 'engineering-without-cluster',
     title: {
-      es: 'Ingeniería de datos frugal',
-      en: 'Frugal data engineering',
+      es: 'Ingeniería de datos sin clúster',
+      en: 'Data engineering without a cluster',
     },
     body: {
       es: 'Decenas de millones de registros hospitalarios procesados en computadores convencionales, con motores OLAP embebidos y formatos columnares abiertos. Sin clústeres, sin licencias privativas.',
@@ -154,12 +154,12 @@ export const CONCLUSIONS: { title: I18n<string>; body: I18n<string> }[] = [
   },
   {
     title: {
-      es: 'La ingeniería de datos frugal es viable dentro del Estado',
-      en: 'Frugal data engineering is viable inside government',
+      es: 'Procesar a escala no exige clústeres ni licencias',
+      en: 'Processing at scale requires neither clusters nor licences',
     },
     body: {
-      es: 'Motores embebidos como DuckDB y prácticas de control de versiones demostraron que es factible procesar decenas de millones de registros sanitarios con infraestructura convencional, reduciendo la dependencia fiscal de licencias privativas y habilitando capacidad analítica en los equipos locales.',
-      en: 'Embedded engines such as DuckDB, combined with version-control practice, proved it is feasible to process tens of millions of health records on conventional infrastructure, reducing fiscal dependence on proprietary licences and putting analytical capability directly in local teams.',
+      es: 'Motores embebidos como DuckDB y prácticas de control de versiones demostraron que se pueden procesar decenas de millones de registros sanitarios con infraestructura convencional. Eso reduce la dependencia fiscal de licencias privativas y, sobre todo, pone la capacidad analítica en los equipos locales en vez de concentrarla en el nivel central.',
+      en: 'Embedded engines such as DuckDB, combined with version-control practice, proved that tens of millions of health records can be processed on conventional infrastructure. That reduces fiscal dependence on proprietary licences and, more importantly, puts analytical capability in local teams instead of concentrating it centrally.',
     },
   },
   {

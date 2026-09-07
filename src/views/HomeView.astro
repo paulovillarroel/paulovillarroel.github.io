@@ -57,8 +57,8 @@ const copy = {
     en: 'Where the usual reading of the problem gets expensive',
   },
   notesLede: {
-    es: 'Tres posiciones que sostengo en el diseño de sistemas sanitarios, y que explican por qué muchos proyectos de datos en salud entregan cifras que nadie puede usar.',
-    en: 'Three positions I hold when designing health systems, and which explain why so many health data projects deliver figures nobody can use.',
+    es: 'Posiciones que sostengo en el diseño de sistemas sanitarios, y que explican por qué muchos proyectos de datos en salud entregan cifras que nadie puede usar.',
+    en: 'Positions I hold when designing health systems, and which explain why so many health data projects deliver figures nobody can use.',
   },
   teachEyebrow: { es: 'Docencia y comunidad', en: 'Teaching and community' },
   teachTitle: {
@@ -82,12 +82,35 @@ const copy = {
 
       <hr class="hero-rule" />
 
-      <p class="hero-kicker">{copy.heroKicker[lang]}</p>
-      <p class="lede hero-lede">{PERSON.summary[lang]}</p>
+      <div class="hero-body">
+        <div class="hero-text">
+          <p class="hero-kicker">{copy.heroKicker[lang]}</p>
+          <p class="lede hero-lede">{PERSON.summary[lang]}</p>
 
-      <div class="hero-actions">
-        <a class="btn" href={ROUTES.work[lang]}>{ui.labels.seeWork[lang]}</a>
-        <a class="arrow-link" href={ROUTES.career[lang]}>{ui.labels.seeCareer[lang]}</a>
+          <div class="hero-actions">
+            <a class="btn" href={ROUTES.work[lang]}>{ui.labels.seeWork[lang]}</a>
+            <a class="arrow-link" href={ROUTES.career[lang]}>{ui.labels.seeCareer[lang]}</a>
+          </div>
+        </div>
+
+        <figure class="portrait">
+          <picture>
+            <source type="image/avif" srcset="/paulo-360.avif 1x, /paulo-720.avif 2x" />
+            <source type="image/webp" srcset="/paulo-360.webp 1x, /paulo-720.webp 2x" />
+            <img
+              src="/paulo-360.jpg"
+              srcset="/paulo-360.jpg 1x, /paulo-720.jpg 2x"
+              width="360"
+              height="360"
+              alt={PERSON.name}
+              decoding="async"
+              fetchpriority="high"
+            />
+          </picture>
+          <figcaption class="portrait-caption mono">
+            {PERSON.name} · {PERSON.location[lang]}
+          </figcaption>
+        </figure>
       </div>
 
       <div class="running">
@@ -180,7 +203,7 @@ const copy = {
   >
     <ul class="positions">
       {
-        POSITIONS.map((position) => (
+        POSITIONS.slice(0, 3).map((position) => (
           <li class="position">
             <h3 class="position-title">
               <a class="position-link" href={`${ROUTES.notes[lang]}#${position.id}`}>
@@ -238,6 +261,44 @@ const copy = {
     border-block-start: 2px solid var(--accent);
     width: 4.5rem;
     margin-block: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
+  }
+
+  .hero-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 20rem);
+    gap: clamp(2rem, 1.2rem + 3.5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .portrait {
+    margin: 0;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    /* Keeps the photo sitting in the page rather than floating on it. */
+    filter: saturate(0.94);
+  }
+
+  .portrait-caption {
+    margin-block-start: 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 54rem) {
+    .hero-body {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
+
+    .portrait {
+      max-width: 15rem;
+    }
   }
 
   .hero-kicker {

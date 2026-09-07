@@ -1,62 +1,6 @@
 import type { I18n } from '@/i18n/config';
 
 /**
- * Engineering cases: a concrete constraint, the decision taken, and what it
- * bought. Written so a reader can judge the reasoning, not just the outcome.
- */
-export type EngineeringCase = {
-  id: string;
-  title: I18n<string>;
-  problem: I18n<string>;
-  decision: I18n<string>;
-  result: I18n<string>;
-  stack: string[];
-};
-
-export const ENGINEERING_CASES: EngineeringCase[] = [
-  {
-    id: 'duckdb-wasm-viewer',
-    title: {
-      es: 'Un visor de datos interactivo sin servidor, con DuckDB-WASM',
-      en: 'An interactive data viewer with no server, using DuckDB-WASM',
-    },
-    problem: {
-      es: 'Entregar exploración interactiva sobre tablas grandes dentro de una institución donde levantar un servidor implica meses de tramitación, la infraestructura central está saturada y exponer una base de datos abre una superficie de riesgo que no compensa el beneficio.',
-      en: 'Delivering interactive exploration over large tables inside an institution where standing up a server takes months of paperwork, central infrastructure is saturated, and exposing a database opens a risk surface that is not worth the benefit.',
-    },
-    decision: {
-      es: 'Mover el motor analítico al navegador: DuckDB compilado a WebAssembly consultando archivos Parquet servidos como estáticos. No hay backend, no hay base de datos que asegurar y no hay proceso que mantener; el cliente hace el trabajo.',
-      en: 'Move the analytical engine into the browser: DuckDB compiled to WebAssembly, querying Parquet files served as static assets. There is no backend, no database to secure and no process to maintain; the client does the work.',
-    },
-    result: {
-      es: 'Exploración con SQL completo sobre datos reales, distribuible como un sitio estático. El coste de infraestructura es cero y el dato nunca sale de la organización hacia un servicio de terceros.',
-      en: 'Full SQL exploration over real data, distributable as a static site. Infrastructure cost is zero and the data never leaves the organisation for a third-party service.',
-    },
-    stack: ['DuckDB-WASM', 'Apache Parquet', 'SQL', 'WebAssembly'],
-  },
-  {
-    id: 'hashing-inferencia',
-    title: {
-      es: 'Hashing de texto para no volver a inferir lo ya inferido',
-      en: 'Text hashing to stop re-inferring what was already inferred',
-    },
-    problem: {
-      es: 'El pipeline de clasificación de sospecha oncológica recalculaba las representaciones vectoriales de cada corrida completa, incluyendo derivaciones cuyo texto era idéntico a las de ejecuciones anteriores. El coste de inferencia crecía con el tamaño de la tabla, no con el volumen de información nueva.',
-      en: 'The cancer-suspicion classification pipeline recomputed vector representations on every full run, including referrals whose text was identical to earlier executions. Inference cost grew with table size rather than with the amount of genuinely new information.',
-    },
-    decision: {
-      es: 'Normalizar el texto libre y usar su hash como llave de caché de embeddings. Antes de vectorizar, el pipeline deduplica contra lo ya calculado y solo envía al modelo los textos que no ha visto nunca.',
-      en: 'Normalise the free text and use its hash as an embedding cache key. Before vectorising, the pipeline deduplicates against what it has already computed and sends the model only text it has never seen.',
-    },
-    result: {
-      es: 'El trabajo de inferencia pasa a ser proporcional a lo genuinamente nuevo. La misma técnica hace que las corridas sean deterministas y comparables entre sí, porque un texto idéntico siempre resuelve al mismo vector.',
-      en: 'Inference work becomes proportional to what is genuinely new. The same technique makes runs deterministic and comparable, because identical text always resolves to the same vector.',
-    },
-    stack: ['Python', 'Embeddings', 'Hashing', 'Caché'],
-  },
-];
-
-/**
  * Technical positions. Each one exists because the naive reading of the
  * problem is common, costly, and wrong.
  */
@@ -65,11 +9,19 @@ export type Position = {
   title: I18n<string>;
   claim: I18n<string>;
   body: I18n<string[]>;
+  /** Id of the project on the work page where this position is load-bearing. */
+  appliesTo: string;
+  appliesToLabel: I18n<string>;
 };
 
 export const POSITIONS: Position[] = [
   {
     id: 'sesgo-supervivencia',
+    appliesTo: 'proyector-listas-espera',
+    appliesToLabel: {
+      es: 'Proyector y simulador de listas de espera',
+      en: 'Waiting list projection model and simulator',
+    },
     title: {
       es: 'Una lista de espera es una cohorte censurada, no un inventario',
       en: 'A waiting list is a censored cohort, not an inventory',
@@ -93,6 +45,11 @@ export const POSITIONS: Position[] = [
   },
   {
     id: 'interoperabilidad',
+    appliesTo: 'record-linkage',
+    appliesToLabel: {
+      es: 'Deduplicación probabilística y vinculación de registros',
+      en: 'Probabilistic deduplication and record linkage',
+    },
     title: {
       es: 'Interoperabilidad no es pasar un JSON',
       en: 'Interoperability is not passing a JSON',
@@ -116,6 +73,11 @@ export const POSITIONS: Position[] = [
   },
   {
     id: 'gobernanza-21719',
+    appliesTo: 'anonimizacion',
+    appliesToLabel: {
+      es: 'Anonimización con k-anonimidad y l-diversidad',
+      en: 'Anonymisation with k-anonymity and l-diversity',
+    },
     title: {
       es: 'La Ley 21.719 es un requisito de arquitectura, no de papeleo',
       en: 'Chile’s data protection law is an architecture requirement, not paperwork',
@@ -134,6 +96,62 @@ export const POSITIONS: Position[] = [
         'Chile’s new personal data protection law places health data in the sensitive category, with reinforced requirements on lawful basis, purpose limitation, minimisation and traceability of processing. Institutionally it tends to be read as a matter of consent forms.',
         'Technically it means something else: pseudonymisation inside the pipeline rather than at the end, separation between identifying keys and clinical attributes, role-based access control over intermediate tables, and an auditable record of which query touched which data and on what grounds.',
         'Designing for that from the start is cheap. Retrofitting it onto an analytical store that already mixed identifiers with clinical variables is expensive, and in practice usually ends with access being restricted for exactly the teams that need the data to manage care.',
+      ],
+    },
+  },
+  {
+    id: 'human-in-the-loop',
+    appliesTo: 'cancer-oculto-quirurgico',
+    appliesToLabel: {
+      es: 'Clasificador oncológico de la lista de espera quirúrgica',
+      en: 'Cancer classifier for the surgical waiting list',
+    },
+    title: {
+      es: 'Un modelo que prioriza no puede desestimar',
+      en: 'A model that prioritises must not be allowed to dismiss',
+    },
+    claim: {
+      es: 'Si el algoritmo puede sacar a alguien de la lista sin que un médico lo mire, el error deja de ser recuperable.',
+      en: 'If the algorithm can drop someone from the list without a doctor looking, the error stops being recoverable.',
+    },
+    body: {
+      es: [
+        'Un clasificador clínico comete dos errores que no cuestan lo mismo. Un falso positivo gasta tiempo de auditoría médica, que es caro pero acotado. Un falso negativo devuelve a un paciente con cáncer a la cola general, donde nadie va a volver a mirarlo, y el coste lo paga una persona.',
+        'Por eso el sistema etiqueta tres estados y no dos. Sospechoso e indeterminado se derivan de forma obligatoria a revisión médica; el algoritmo nunca cierra un caso por su cuenta. La categoría intermedia no es una debilidad del modelo: es el lugar donde se deposita explícitamente lo que el modelo no sabe.',
+        'La consecuencia de diseño es que el umbral no se optimiza para exactitud global. Se calibra para que el error caro sea el que el sistema comete menos, aceptando de entrada más trabajo de auditoría. Esa es una decisión clínica antes que estadística, y por lo tanto no la puede tomar el modelo.',
+      ],
+      en: [
+        'A clinical classifier makes two errors that do not cost the same. A false positive spends medical audit time, which is expensive but bounded. A false negative sends a cancer patient back to the general queue, where nobody will look again, and the cost is paid by a person.',
+        'That is why the system labels three states, not two. Suspicious and indeterminate are mandatorily routed to medical review; the algorithm never closes a case on its own. The middle category is not a weakness of the model: it is where what the model does not know gets deposited explicitly.',
+        'The design consequence is that the threshold is not optimised for overall accuracy. It is calibrated so the expensive error is the one the system makes least, accepting more audit work up front. That is a clinical decision before a statistical one, and therefore not one the model can make.',
+      ],
+    },
+  },
+  {
+    id: 'reproducibilidad',
+    appliesTo: 'arquitectura-analitica',
+    appliesToLabel: {
+      es: 'Arquitectura analítica sobre tecnologías abiertas',
+      en: 'Analytics architecture on open technology',
+    },
+    title: {
+      es: 'Una cifra de política pública sin pipeline detrás es una opinión',
+      en: 'A public policy figure with no pipeline behind it is an opinion',
+    },
+    claim: {
+      es: 'Si el número no se puede reproducir, la decisión que se tomó con él no se puede defender.',
+      en: 'If the number cannot be reproduced, the decision made with it cannot be defended.',
+    },
+    body: {
+      es: [
+        'Las cifras de lista de espera sostienen asignación presupuestaria, metas sanitarias y compromisos con la red asistencial. Cuando salen de una planilla que alguien armó a mano, no hay forma de explicar por qué el dato de marzo no cuadra con el de febrero, ni de distinguir un cambio real de un cambio de criterio.',
+        'La solución no es documentar más. Es que detrás de cada cifra haya un pipeline versionado, con la fecha de corte como parámetro explícito, pruebas de calidad sobre las capas del almacén, y un repositorio donde cada cambio de criterio quede fechado y atribuido a alguien.',
+        'Eso convierte la reproducibilidad en un mecanismo de rendición de cuentas y no en una virtud metodológica. Cuando alguien pregunta de dónde salió el número, la respuesta deja de ser una explicación y pasa a ser un commit.',
+      ],
+      en: [
+        'Waiting list figures underpin budget allocation, health targets and commitments to the care network. When they come out of a spreadsheet someone assembled by hand, there is no way to explain why March does not reconcile with February, or to tell a real change from a change of criteria.',
+        'The answer is not more documentation. It is that behind every figure there is a versioned pipeline, with the cut-off date as an explicit parameter, quality tests over the warehouse layers, and a repository where each change of criteria is dated and attributed to someone.',
+        'That turns reproducibility into an accountability mechanism rather than a methodological virtue. When someone asks where the number came from, the answer stops being an explanation and becomes a commit.',
       ],
     },
   },

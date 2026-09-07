@@ -12,6 +12,10 @@ export type Project = {
   context: I18n<string>;
   approach: I18n<string[]>;
   outcome: I18n<string[]>;
+  /** The shape of the system, stage by stage. Rendered as a flow. */
+  architecture?: { stage: I18n<string>; detail: I18n<string> }[];
+  /** Public repository, when the code is open. */
+  repo?: string;
   /** Published evaluation results, rendered as a table when present. */
   metrics?: {
     param: I18n<string>;
@@ -24,6 +28,50 @@ export type Project = {
 export const PROJECTS: Project[] = [
   {
     id: 'oncologia-hph',
+    architecture: [
+      {
+        stage: { es: 'Ingreso', en: 'Intake' },
+        detail: {
+          es: 'Sospecha oncológica derivada desde atención primaria o urgencia.',
+          en: 'Cancer suspicion referred from primary care or the emergency department.',
+        },
+      },
+      {
+        stage: { es: 'Identificación', en: 'Flagging' },
+        detail: {
+          es: 'Etiqueta adhesiva fluorescente sobre la ficha y la derivación de papel: la marca viaja con el documento por todos los puntos administrativos.',
+          en: 'A fluorescent sticker on the chart and the paper referral: the flag travels with the document through every administrative handoff.',
+        },
+      },
+      {
+        stage: { es: 'Registro', en: 'Registration' },
+        detail: {
+          es: 'Ingreso a la planilla de trazabilidad con un gestor de casos clínicos asignado y nominado.',
+          en: 'Entry into the traceability sheet with a named clinical case manager assigned.',
+        },
+      },
+      {
+        stage: { es: 'Seguimiento', en: 'Follow-up' },
+        detail: {
+          es: 'Contacto activo en cada hito: primera consulta, confirmación diagnóstica, comité oncológico y definición terapéutica.',
+          en: 'Active contact at each milestone: first appointment, diagnostic confirmation, tumour board and treatment decision.',
+        },
+      },
+      {
+        stage: { es: 'Escalamiento', en: 'Escalation' },
+        detail: {
+          es: 'Alerta a la dirección del establecimiento ante riesgo de incumplimiento del plazo GES, antes de que venza.',
+          en: 'Alert to hospital management when a GES deadline is at risk, before it expires.',
+        },
+      },
+      {
+        stage: { es: 'Salida', en: 'Exit' },
+        detail: {
+          es: 'Tratamiento, o derivación temprana a cuidados paliativos y alivio del dolor.',
+          en: 'Treatment, or early referral to palliative care and pain relief.',
+        },
+      },
+    ],
     featured: true,
     period: '2014–2018',
     org: {
@@ -39,8 +87,8 @@ export const PROJECTS: Project[] = [
       en: 'Cancer traceability and active case-management model',
     },
     tagline: {
-      es: 'Innovación frugal, sin software propietario, que llevó a un hospital público al Top 5 nacional en gestión oncológica.',
-      en: 'Frugal innovation, with no proprietary software, that took a public hospital into the national Top 5 for cancer management.',
+      es: 'Rediseño de procesos sin una sola licencia de software, que llevó a un hospital público al Top 5 nacional en gestión oncológica.',
+      en: 'A process redesign without a single software licence, which took a public hospital into the national Top 5 for cancer management.',
     },
     context: {
       es: 'El escenario previo combinaba demoras prolongadas en el acceso a especialistas, retrasos críticos en la confirmación diagnóstica y un incumplimiento sistemático de los plazos legales del régimen GES. Las derivaciones en papel se estancaban en los puntos de contacto administrativo y nadie sabía dónde estaba cada paciente.',
@@ -80,6 +128,43 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'anomalias-listas-espera',
+    architecture: [
+      {
+        stage: { es: 'Fuente', en: 'Source' },
+        detail: {
+          es: 'Registro Nacional de Listas de Espera, decenas de millones de transacciones asistenciales.',
+          en: 'National Waiting List Registry, tens of millions of care transactions.',
+        },
+      },
+      {
+        stage: { es: 'Agregación', en: 'Aggregation' },
+        detail: {
+          es: 'La unidad de análisis no es el registro sino la serie temporal de cada establecimiento por tipo de prestación.',
+          en: 'The unit of analysis is not the record but each facility’s time series by service type.',
+        },
+      },
+      {
+        stage: { es: 'Ejes', en: 'Axes' },
+        detail: {
+          es: 'Cuatro señales en paralelo: volumen de ingresos y egresos, permanencia frente a umbrales esperados, variabilidad contra establecimientos comparables, y evolución de las justificaciones de egreso.',
+          en: 'Four signals in parallel: entry and exit volume, time on list against expected thresholds, variance against comparable facilities, and the trajectory of discharge justifications.',
+        },
+      },
+      {
+        stage: { es: 'Puntuación', en: 'Scoring' },
+        detail: {
+          es: 'Score de riesgo por establecimiento y tipo de prestación, no por registro individual.',
+          en: 'A risk score per facility and service type, not per individual record.',
+        },
+      },
+      {
+        stage: { es: 'Entrega', en: 'Delivery' },
+        detail: {
+          es: 'Dos salidas según destinatario: planilla de fiscalización para el nivel central y reportes HTML interactivos para las contrapartes hospitalarias.',
+          en: 'Two outputs by audience: a compliance spreadsheet for the central level and interactive HTML reports for hospital counterparts.',
+        },
+      },
+    ],
     featured: true,
     period: '2023',
     org: {
@@ -132,6 +217,50 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'cancer-oculto-quirurgico',
+    architecture: [
+      {
+        stage: { es: 'Extracción', en: 'Extraction' },
+        detail: {
+          es: 'Corte de la lista de espera quirúrgica nacional desde el almacén por capas, a Parquet consultado con DuckDB: ~475.000 diagnósticos.',
+          en: 'A cut of the national surgical waiting list from the layered warehouse into Parquet, queried with DuckDB: ~475,000 diagnoses.',
+        },
+      },
+      {
+        stage: { es: 'Filtrado determinista', en: 'Deterministic filtering' },
+        detail: {
+          es: 'Expresiones regulares clínicas y mapeo ontológico sobre CIE-10 capturan los criterios inequívocos antes de que intervenga cualquier modelo.',
+          en: 'Clinical regular expressions and ontological mapping over ICD-10 capture unambiguous criteria before any model is involved.',
+        },
+      },
+      {
+        stage: { es: 'Vectorización', en: 'Vectorisation' },
+        detail: {
+          es: 'Embeddings del texto libre contra centroides de diagnósticos oncológicos confirmados. El hash del texto normalizado sirve de llave de caché, así que solo se vectoriza lo nuevo.',
+          en: 'Embeddings of the free text against centroids of confirmed cancer diagnoses. The normalised text’s hash is the cache key, so only new text is vectorised.',
+        },
+      },
+      {
+        stage: { es: 'Clasificación', en: 'Classification' },
+        detail: {
+          es: 'Ensamble de árboles con potenciación de gradiente; el umbral se recalibra con el índice de Youden en cada reentrenamiento.',
+          en: 'A gradient-boosted tree ensemble; the threshold is recalibrated with the Youden index on every retraining.',
+        },
+      },
+      {
+        stage: { es: 'Decisión', en: 'Decision' },
+        detail: {
+          es: 'Tres estados. Sospechoso e indeterminado se derivan de forma obligatoria a auditoría clínica médica; el modelo no cierra casos.',
+          en: 'Three states. Suspicious and indeterminate are mandatorily routed to medical clinical audit; the model closes nothing.',
+        },
+      },
+      {
+        stage: { es: 'Entrega', en: 'Delivery' },
+        detail: {
+          es: 'Corte mensual oficial y auditable, más un canal preliminar semanal sobre la base transaccional que adelanta los casos con ~7 días de rezago.',
+          en: 'An official, auditable monthly cut, plus a weekly preliminary channel over the transactional base surfacing cases with about 7 days of lag.',
+        },
+      },
+    ],
     featured: true,
     period: '2025',
     org: {
@@ -161,6 +290,7 @@ export const PROJECTS: Project[] = [
         'Clasificación predictiva por ensamble: árboles de decisión con potenciación de gradiente, calibrados para procesar las descripciones ambiguas o abreviadas que efectivamente escribe la red asistencial. Los umbrales se recalibran con el índice de Youden en cada ciclo de reentrenamiento.',
         'Capa de decisión con supervisión humana: cada interconsulta se etiqueta como sospechosa, no sospechosa o indeterminada. Los casos sospechosos e indeterminados se desvían de forma obligatoria a auditoría clínica médica. El algoritmo apoya el triaje; nunca ejecuta desestimaciones autónomas.',
         'Dos canales de entrega: el corte mensual oficial produce la etiqueta auditable que usa la red para priorizar, y un canal preliminar semanal sobre la base transaccional adelanta los casos que el corte oficial todavía no etiquetó, bajando el rezago de unos 45 días a unos 7.',
+        'Caché de inferencia por hash: el texto libre se normaliza y su hash sirve de llave, de modo que el pipeline solo vectoriza lo que no ha visto nunca. El coste de cada corrida pasa a ser proporcional a la información nueva, no al tamaño de la tabla, y un texto idéntico siempre resuelve al mismo vector, lo que hace las corridas comparables entre sí.',
         'Gobernanza del modelo como parte del sistema, no como anexo: evaluación de impacto en protección de datos, auditoría de equidad, documentación de transparencia algorítmica y respuesta formal a las consultas del Consejo para la Transparencia.',
       ],
       en: [
@@ -169,6 +299,7 @@ export const PROJECTS: Project[] = [
         'Ensemble predictive classification: gradient-boosted decision trees, calibrated for the ambiguous or abbreviated descriptions the care network actually writes. Thresholds are recalibrated with the Youden index on every retraining cycle.',
         'A decision layer with human oversight: every referral is labelled suspicious, not suspicious or indeterminate. Suspicious and indeterminate cases are mandatorily routed to medical clinical audit. The algorithm supports triage; it never dismisses a case autonomously.',
         'Two delivery channels: the official monthly cut produces the auditable label the network uses to prioritise, while a weekly preliminary channel over the transactional base surfaces cases the official cut has not labelled yet, cutting the lag from around 45 days to about 7.',
+        'Hash-keyed inference cache: free text is normalised and its hash used as the key, so the pipeline only vectorises what it has never seen. Each run costs in proportion to new information rather than table size, and identical text always resolves to the same vector, which makes runs comparable.',
         'Model governance built into the system rather than bolted on: data protection impact assessment, equity audit, algorithmic transparency documentation and formal responses to the Council for Transparency.',
       ],
     },
@@ -238,10 +369,40 @@ export const PROJECTS: Project[] = [
         },
       },
     ],
-    stack: ['NLP', 'Embeddings', 'Gradient boosting', 'XGBoost', 'CIE-10', 'Índice de Youden', 'Human-in-the-loop', 'DPIA'],
+    stack: ['NLP', 'Embeddings', 'Gradient boosting', 'XGBoost', 'CIE-10', 'Índice de Youden', 'Caché por hash', 'Human-in-the-loop'],
   },
   {
     id: 'topografia-cieo3',
+    architecture: [
+      {
+        stage: { es: 'Entrada', en: 'Input' },
+        detail: {
+          es: 'Los casos que el clasificador marcó como sospechosos, en la misma corrida.',
+          en: 'The cases the classifier flagged as suspicious, in the same run.',
+        },
+      },
+      {
+        stage: { es: 'Modelo', en: 'Model' },
+        detail: {
+          es: 'Llama 3.1 8B afinado con QLoRA: cuantización de cuatro bits más adaptadores de bajo rango, de modo que entrenamiento e inferencia caben en una sola GPU.',
+          en: 'Llama 3.1 8B fine-tuned with QLoRA: four-bit quantisation plus low-rank adapters, so training and inference fit on a single GPU.',
+        },
+      },
+      {
+        stage: { es: 'Despliegue', en: 'Serving' },
+        detail: {
+          es: 'Servido con Ollama dentro de la infraestructura ministerial. El texto clínico no sale hacia ninguna API externa.',
+          en: 'Served with Ollama inside ministry infrastructure. Clinical text never reaches an external API.',
+        },
+      },
+      {
+        stage: { es: 'Normalización', en: 'Normalisation' },
+        detail: {
+          es: 'La salida se mapea a códigos de topografía CIE-O3, el estándar con que se codifican los registros de cáncer.',
+          en: 'Output is mapped to ICD-O3 topography codes, the standard cancer registries are coded in.',
+        },
+      },
+    ],
     featured: true,
     period: '2025–2026',
     org: {
@@ -294,6 +455,43 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'proyector-listas-espera',
+    architecture: [
+      {
+        stage: { es: 'Entrada', en: 'Input' },
+        detail: {
+          es: 'Serie histórica de cortes mensuales, desagregada por Servicio de Salud.',
+          en: 'Historical series of monthly cuts, broken down by Health Service.',
+        },
+      },
+      {
+        stage: { es: 'Modelo', en: 'Model' },
+        detail: {
+          es: 'Ingresos y egresos se modelan por separado, con su estacionalidad propia: el stock es el resultado, no la variable.',
+          en: 'Entries and exits are modelled separately, each with its own seasonality: the stock is the result, not the variable.',
+        },
+      },
+      {
+        stage: { es: 'Calibración', en: 'Calibration' },
+        detail: {
+          es: 'Un ajuste por Servicio de Salud en lugar de un modelo nacional único, porque las dinámicas territoriales no son comparables.',
+          en: 'One fit per Health Service instead of a single national model, because territorial dynamics are not comparable.',
+        },
+      },
+      {
+        stage: { es: 'Verificación', en: 'Verification' },
+        detail: {
+          es: 'Backtest sobre cortes históricos y una auditoría adversarial de 30 chequeos diseñada para romper el modelo.',
+          en: 'Backtesting over historical cuts and a 30-check adversarial audit designed to break the model.',
+        },
+      },
+      {
+        stage: { es: 'Salida', en: 'Output' },
+        detail: {
+          es: 'Simulador en el navegador donde quien decide mueve supuestos de capacidad y política de asignación.',
+          en: 'An in-browser simulator where the decision-maker moves capacity and allocation-policy assumptions.',
+        },
+      },
+    ],
     featured: false,
     period: '2025–2026',
     org: {
@@ -344,6 +542,36 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'anonimizacion',
+    architecture: [
+      {
+        stage: { es: 'Clasificación de campos', en: 'Field classification' },
+        detail: {
+          es: 'Cada columna se declara como identificador directo, cuasi-identificador o atributo sensible. En salud el atributo sensible es el diagnóstico.',
+          en: 'Each column is declared a direct identifier, a quasi-identifier or a sensitive attribute. In health the sensitive attribute is the diagnosis.',
+        },
+      },
+      {
+        stage: { es: 'Generalización', en: 'Generalisation' },
+        detail: {
+          es: 'Degradación iterativa de niveles sobre los cuasi-identificadores, un paso a la vez, en lugar de una pasada única que generaliza de más.',
+          en: 'Iterative level degradation over the quasi-identifiers, one step at a time, instead of a single pass that over-generalises.',
+        },
+      },
+      {
+        stage: { es: 'Verificación', en: 'Verification' },
+        detail: {
+          es: 'Se comprueba k sobre cada clase de equivalencia y l sobre la diversidad del atributo sensible dentro de cada clase.',
+          en: 'k is checked over each equivalence class and l over the diversity of the sensitive attribute within each class.',
+        },
+      },
+      {
+        stage: { es: 'Compuerta', en: 'Gate' },
+        detail: {
+          es: 'Si la salida no alcanza el umbral, no se exporta. La decisión es del código, no del criterio de quien entrega.',
+          en: 'If the output does not reach the threshold, it is not exported. The decision belongs to the code, not to the judgement of whoever releases it.',
+        },
+      },
+    ],
     featured: false,
     period: '2024–2026',
     org: {
@@ -390,10 +618,48 @@ export const PROJECTS: Project[] = [
         'Underpins transparency releases over waiting-list data, with an explicit and checkable criterion instead of a case-by-case judgement call.',
       ],
     },
-    stack: ['R', 'k-anonimidad', 'l-diversidad', 'Privacidad diferencial aplicada'],
+    repo: 'https://github.com/paulovillarroel/anonimizacion-datos',
+    stack: ['R', 'k-anonimidad', 'l-diversidad'],
   },
   {
     id: 'record-linkage',
+    architecture: [
+      {
+        stage: { es: 'Fuente', en: 'Source' },
+        detail: {
+          es: '2,1 millones de registros con múltiples llaves identificatorias por persona.',
+          en: '2.1 million records with multiple identifying keys per person.',
+        },
+      },
+      {
+        stage: { es: 'Motor', en: 'Engine' },
+        detail: {
+          es: 'Splink sobre DuckDB, en proceso: la comparación por bloques corre en el mismo equipo, sin clúster.',
+          en: 'Splink over DuckDB, in-process: blocked comparison runs on the same machine, with no cluster.',
+        },
+      },
+      {
+        stage: { es: 'Comparación', en: 'Comparison' },
+        detail: {
+          es: 'Similitud de Jaro-Winkler sobre nombre, fecha de nacimiento, sexo y domicilio, ponderada bajo el marco de Fellegi-Sunter.',
+          en: 'Jaro-Winkler similarity over name, date of birth, sex and address, weighted under the Fellegi-Sunter framework.',
+        },
+      },
+      {
+        stage: { es: 'Selección de modelo', en: 'Model selection' },
+        detail: {
+          es: 'Se entrenan 40 configuraciones candidatas y se retiene la que separa más limpiamente coincidencias de no coincidencias, medido con el dip de Hartigan sobre la distribución de puntajes.',
+          en: '40 candidate configurations are trained and the one that separates matches from non-matches most cleanly is kept, measured with Hartigan’s dip test over the score distribution.',
+        },
+      },
+      {
+        stage: { es: 'Salida', en: 'Output' },
+        detail: {
+          es: 'Identidades unificadas que corrigen el conteo de demanda quirúrgica real.',
+          en: 'Unified identities that correct the count of real surgical demand.',
+        },
+      },
+    ],
     featured: false,
     period: '2023–2026',
     org: {
@@ -441,7 +707,51 @@ export const PROJECTS: Project[] = [
     stack: ['Record linkage', 'Fellegi-Sunter', 'Splink', 'DuckDB', 'Jaro-Winkler', 'Dip de Hartigan', 'Python'],
   },
   {
-    id: 'arquitectura-frugal',
+    id: 'arquitectura-analitica',
+    architecture: [
+      {
+        stage: { es: 'Almacenamiento', en: 'Storage' },
+        detail: {
+          es: 'Formato columnar Apache Parquet sobre almacenamiento compartido, en lugar de una base servida.',
+          en: 'Apache Parquet columnar files on shared storage, instead of a served database.',
+        },
+      },
+      {
+        stage: { es: 'Motor', en: 'Engine' },
+        detail: {
+          es: 'DuckDB en proceso, corriendo en el propio equipo del analista: decenas de millones de filas sin clúster ni servidor.',
+          en: 'DuckDB in-process, running on the analyst’s own machine: tens of millions of rows with no cluster and no server.',
+        },
+      },
+      {
+        stage: { es: 'Capas y compuerta', en: 'Layers and gate' },
+        detail: {
+          es: 'Capa cruda y capa transformada, con pruebas de calidad Pointblank entre ambas. Lo que no pasa las pruebas no se publica y vuelve al establecimiento de origen.',
+          en: 'A raw layer and a transformed layer, with Pointblank quality tests between them. What fails the tests is not published and goes back to the originating facility.',
+        },
+      },
+      {
+        stage: { es: 'Ejecución', en: 'Execution' },
+        detail: {
+          es: 'Un script de arranque único por proyecto, con la fecha de corte como parámetro, orquestado por Kestra sobre Docker.',
+          en: 'A single entry script per project, with the cut-off date as a parameter, orchestrated by Kestra on Docker.',
+        },
+      },
+      {
+        stage: { es: 'Exploración', en: 'Exploration' },
+        detail: {
+          es: 'DuckDB compilado a WebAssembly consulta los mismos Parquet desde el navegador, sin backend que levantar ni base que exponer.',
+          en: 'DuckDB compiled to WebAssembly queries the same Parquet from the browser, with no backend to stand up and no database to expose.',
+        },
+      },
+      {
+        stage: { es: 'Trazabilidad', en: 'Traceability' },
+        detail: {
+          es: 'Git y GitHub Flow con revisión de pull requests: cada cambio de criterio queda fechado y atribuido.',
+          en: 'Git and GitHub Flow with pull-request review: every change of criteria is dated and attributed.',
+        },
+      },
+    ],
     featured: true,
     period: '2021–2026',
     org: {
@@ -453,8 +763,8 @@ export const PROJECTS: Project[] = [
       en: 'Analytics architecture and technical transfer',
     },
     title: {
-      es: 'Arquitectura analítica frugal sobre tecnologías abiertas',
-      en: 'Frugal analytics architecture on open technology',
+      es: 'Arquitectura analítica sobre tecnologías abiertas',
+      en: 'Analytics architecture on open technology',
     },
     tagline: {
       es: 'Decenas de millones de filas consultadas en equipos convencionales, con motores OLAP embebidos y sin licencias privativas.',
@@ -472,6 +782,7 @@ export const PROJECTS: Project[] = [
         'Un esqueleto de proyecto común para toda la unidad —estructura de carpetas, rutas configurables, script de ejecución único— de modo que cualquier repositorio se levanta y se corre igual, y las convenciones quedan escritas en vez de vivir en la cabeza de alguien.',
         'Validación de calidad del almacén como compuerta previa a la publicación: pruebas sobre la capa cruda y sobre la capa transformada con Pointblank, que derivan a los establecimientos los registros con problemas y certifican lo que sale en los reportes oficiales.',
         'Orquestación de los pipelines con Kestra sobre Docker, encadenando la ejecución de cada proyecto y el depósito de resultados sin intervención manual.',
+        'Exploración interactiva sin servidor: DuckDB compilado a WebAssembly consulta archivos Parquet servidos como estáticos, de modo que el motor analítico corre en el navegador de quien consulta. No hay backend que levantar ni base de datos que exponer, en una institución donde ambas cosas cuestan meses de tramitación.',
       ],
       en: [
         'DuckDB and Apache Parquet columnar storage: a pioneering deployment of in-process OLAP engines, letting analysts query patient tables of tens of millions of rows directly on ordinary machines across the care network, with no external clusters and without exceeding RAM limits.',
@@ -480,6 +791,7 @@ export const PROJECTS: Project[] = [
         'A shared project skeleton across the unit — folder structure, configurable paths, a single run script — so any repository starts and runs the same way, and conventions are written down instead of living in someone’s head.',
         'Data warehouse quality validation as a gate before publication: tests over the raw and the transformed layer with Pointblank, routing problem records back to the facilities and certifying what goes into official reports.',
         'Pipeline orchestration with Kestra on Docker, chaining each project’s execution and result delivery without manual intervention.',
+        'Serverless interactive exploration: DuckDB compiled to WebAssembly queries Parquet files served as static assets, so the analytical engine runs in the reader’s own browser. There is no backend to stand up and no database to expose, in an institution where either takes months of paperwork.',
       ],
     },
     outcome: {
@@ -494,7 +806,7 @@ export const PROJECTS: Project[] = [
         'Architecture actively transferred to the regional community through LatinR (2021, 2024, 2025 and 2026) and the international useR! 2022 conference.',
       ],
     },
-    stack: ['DuckDB', 'Apache Parquet', 'R', 'Quarto', 'Shiny', 'Python', 'Kestra', 'Docker', 'Pointblank', 'Git'],
+    stack: ['DuckDB', 'DuckDB-WASM', 'Apache Parquet', 'R', 'Quarto', 'Shiny', 'Python', 'Kestra', 'Docker', 'Pointblank'],
   },
 ];
 

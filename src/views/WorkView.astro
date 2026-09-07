@@ -2,6 +2,7 @@
 import type { Locale } from '@/i18n/config';
 import { ui } from '@/i18n/ui';
 import { METHOD_GROUPS, PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
+import { APPS } from '@/data/apps';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import Section from '@/components/Section.astro';
@@ -35,6 +36,18 @@ const copy = {
     es: 'Cada método de esta lista está en uso en alguno de los sistemas que siguen. No es un inventario de familiaridad.',
     en: 'Every method listed here is in use in one of the systems below. It is not a familiarity inventory.',
   },
+  problem: { es: 'El problema', en: 'The problem' },
+  architecture: { es: 'Arquitectura', en: 'Architecture' },
+  repo: { es: 'Código', en: 'Code' },
+  appsEyebrow: { es: 'Aplicaciones', en: 'Applications' },
+  appsTitle: { es: 'Software que construí y mantengo', en: 'Software I built and maintain' },
+  appsLede: {
+    es: 'Herramientas propias con despliegue en funcionamiento. Donde el repositorio es público, está enlazado.',
+    en: 'Tools of my own with a running deployment. Where the repository is public, it is linked.',
+  },
+  visit: { es: 'Ver el sitio', en: 'Visit' },
+  how: { es: 'Cómo funciona', en: 'How it works' },
+  produced: { es: 'Qué produjo', en: 'What it produced' },
   evaluation: { es: 'Evaluación', en: 'Evaluation' },
   colParam: { es: 'Parámetro', en: 'Parameter' },
   colValue: { es: 'Rendimiento', en: 'Result' },
@@ -69,6 +82,13 @@ const copy = {
             </li>
           ))
         }
+        <li>
+          <a class="index-link" href="#aplicaciones">
+            <span class="index-num mono">{String(PROJECTS.length + 1).padStart(2, '0')}</span>
+            <span class="index-text">{copy.appsTitle[lang]}</span>
+            <span class="index-year mono">{copy.appsEyebrow[lang]}</span>
+          </a>
+        </li>
       </ol>
     </nav>
   </PageHeader>
@@ -98,76 +118,137 @@ const copy = {
     PROJECTS.map((project, i) => (
       <Section sunk={i % 2 === 0} id={project.id}>
         <article class="project">
-          <header class="project-head">
-            <p class="eyebrow">
-              {project.period} · {project.org[lang]}
-            </p>
-            <h2 class="project-title">{project.title[lang]}</h2>
-            <p class="lede project-tagline">{project.tagline[lang]}</p>
-            <p class="project-role mono muted">
-              {ui.labels.role[lang]}: {project.role[lang]}
-            </p>
-          </header>
+          <div class="rail">
+            <p class="rail-period mono">{project.period}</p>
+            <p class="rail-org">{project.org[lang]}</p>
 
-          <div class="project-body">
-            <div class="block">
-              <h3 class="block-title">{ui.labels.context[lang]}</h3>
-              <p class="block-text">{project.context[lang]}</p>
-            </div>
-
-            <div class="block">
-              <h3 class="block-title">{ui.labels.approach[lang]}</h3>
-              <ul class="block-list">
-                {project.approach[lang].map((item) => <li>{item}</li>)}
-              </ul>
-            </div>
-
-            <div class="block">
-              <h3 class="block-title">{ui.labels.impact[lang]}</h3>
-              <ul class="block-list outcome">
-                {project.outcome[lang].map((item) => <li>{item}</li>)}
-              </ul>
-            </div>
+            <dl class="rail-meta">
+              <dt>{ui.labels.role[lang]}</dt>
+              <dd>{project.role[lang]}</dd>
+              <dt>{ui.labels.stack[lang]}</dt>
+              <dd>
+                <ul class="chips">
+                  {project.stack.map((item) => <li class="chip mono">{item}</li>)}
+                </ul>
+              </dd>
+              {
+                project.repo && (
+                  <>
+                    <dt>{copy.repo[lang]}</dt>
+                    <dd>
+                      <a class="link mono" href={project.repo} rel="noopener" target="_blank">
+                        GitHub ↗
+                      </a>
+                    </dd>
+                  </>
+                )
+              }
+            </dl>
           </div>
 
-          {
-            project.metrics && (
-              <div class="evaluation">
-                <h3 class="block-title">{copy.evaluation[lang]}</h3>
-                <div class="table-wrap">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">{copy.colParam[lang]}</th>
-                        <th scope="col">{copy.colValue[lang]}</th>
-                        <th scope="col">{copy.colImplication[lang]}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {project.metrics.map((metric) => (
-                        <tr>
-                          <th scope="row">{metric.param[lang]}</th>
-                          <td class="metric-value mono">{metric.value[lang]}</td>
-                          <td class="muted">{metric.implication[lang]}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )
-          }
+          <div class="body">
+            <h2 class="project-title">{project.title[lang]}</h2>
+            <p class="lede project-tagline">{project.tagline[lang]}</p>
 
-          <footer class="project-foot">
-            <h3 class="block-title">{ui.labels.stack[lang]}</h3>
-            <ul class="chips">
-              {project.stack.map((item) => <li class="chip mono">{item}</li>)}
-            </ul>
-          </footer>
+            <section class="block">
+              <h3 class="block-title">{copy.problem[lang]}</h3>
+              <p class="block-text">{project.context[lang]}</p>
+            </section>
+
+            {
+              project.architecture && (
+                <section class="block">
+                  <h3 class="block-title">{copy.architecture[lang]}</h3>
+                  <ol class="flow">
+                    {project.architecture.map((step) => (
+                      <li class="flow-step">
+                        <span class="flow-stage mono">{step.stage[lang]}</span>
+                        <span class="flow-detail">{step.detail[lang]}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              )
+            }
+
+            <section class="block">
+              <h3 class="block-title">{copy.produced[lang]}</h3>
+              <ul class="outcomes">
+                {project.outcome[lang].map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+
+            {
+              project.metrics && (
+                <section class="block">
+                  <h3 class="block-title">{copy.evaluation[lang]}</h3>
+                  <div class="table-wrap">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">{copy.colParam[lang]}</th>
+                          <th scope="col">{copy.colValue[lang]}</th>
+                          <th scope="col">{copy.colImplication[lang]}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {project.metrics.map((metric) => (
+                          <tr>
+                            <th scope="row">{metric.param[lang]}</th>
+                            <td class="metric-value mono">{metric.value[lang]}</td>
+                            <td class="muted">{metric.implication[lang]}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )
+            }
+          </div>
         </article>
       </Section>
     ))
   }
+
+  <Section
+    sunk
+    id="aplicaciones"
+    eyebrow={copy.appsEyebrow[lang]}
+    title={copy.appsTitle[lang]}
+    lede={copy.appsLede[lang]}
+  >
+    <ul class="apps">
+      {
+        APPS.map((app) => (
+          <li class="app">
+            <div class="app-head">
+              <h3 class="app-name">{app.name}</h3>
+              <p class="app-status mono">{app.status[lang]}</p>
+            </div>
+            <div class="app-body">
+              <p class="app-what">{app.what[lang]}</p>
+              <ul class="chips app-stack">
+                {app.stack.map((item) => <li class="chip mono">{item}</li>)}
+              </ul>
+              <p class="app-links">
+                {app.url && (
+                  <a class="link" href={app.url} rel="noopener" target="_blank">
+                    {copy.visit[lang]} ↗
+                  </a>
+                )}
+                {app.repo && (
+                  <a class="link mono" href={app.repo} rel="noopener" target="_blank">
+                    GitHub ↗
+                  </a>
+                )}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
 
   <Section
     id="programa-2026"
@@ -233,85 +314,6 @@ const copy = {
     color: var(--ink-3);
   }
 
-  /* ---- Project ---- */
-  .project-head {
-    max-width: 46rem;
-    /* Clears the sticky header when jumping in from the index. */
-    scroll-margin-block-start: 6rem;
-  }
-
-  .project-title {
-    margin-block-start: 0.6rem;
-    font-size: var(--step-3);
-  }
-
-  .project-tagline {
-    margin-block-start: 1rem;
-  }
-
-  .project-role {
-    margin-block-start: 1rem;
-    font-size: 0.74rem;
-    letter-spacing: 0.03em;
-    line-height: 1.6;
-  }
-
-  .project-body {
-    display: grid;
-    gap: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-    margin-block-start: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
-    padding-block-start: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
-    border-block-start: 1px solid var(--line-strong);
-  }
-
-  .block-title {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-block-end: 0.85rem;
-  }
-
-  .block-text {
-    color: var(--ink-2);
-    font-size: var(--step--1);
-    line-height: 1.75;
-  }
-
-  .block-list {
-    display: grid;
-    gap: 0.75rem;
-    padding-inline-start: 0;
-    margin: 0;
-    list-style: none;
-    color: var(--ink-2);
-    font-size: var(--step--1);
-    line-height: 1.7;
-  }
-
-  .block-list li {
-    padding-inline-start: 1.1rem;
-    position: relative;
-  }
-
-  .block-list li::before {
-    content: '';
-    position: absolute;
-    inset-inline-start: 0;
-    inset-block-start: 0.62em;
-    width: 0.4rem;
-    height: 1px;
-    background: var(--line-strong);
-  }
-
-  .block-list.outcome li::before {
-    background: var(--accent);
-    height: 2px;
-  }
-
   /* ---- Methods ---- */
   .methods {
     display: grid;
@@ -355,11 +357,188 @@ const copy = {
     background: var(--line-strong);
   }
 
-  /* ---- Evaluation table ---- */
-  .evaluation {
-    margin-block-start: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+  /* ---- Project: metadata rail + one reading column ----
+     Three equal columns of context / approach / outcome forced the eye to read
+     in parallel and never aligned; this reads top-down at a single measure. */
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+    align-items: start;
+    scroll-margin-block-start: 6rem;
   }
 
+  .rail {
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .rail-period {
+    color: var(--accent);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    padding-block-end: 0.7rem;
+    border-block-end: 2px solid var(--accent);
+  }
+
+  .rail-org {
+    margin-block-start: 0.8rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .rail-meta {
+    margin: 1.5rem 0 0;
+  }
+
+  .rail-meta dt {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .rail-meta dd {
+    margin: 0.45rem 0 1.25rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .rail-meta dd:last-child {
+    margin-block-end: 0;
+  }
+
+  .project-title {
+    font-size: var(--step-3);
+    max-width: 26ch;
+  }
+
+  .project-tagline {
+    margin-block-start: 1rem;
+    max-width: 40rem;
+  }
+
+  .block {
+    margin-block-start: clamp(1.75rem, 1.5rem + 1.4vw, 2.5rem);
+    padding-block-start: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
+    border-block-start: 1px solid var(--line-strong);
+  }
+
+  .block-title {
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-block-end: 0.9rem;
+  }
+
+  .block-text,
+  .outcomes {
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.78;
+    max-width: 42rem;
+  }
+
+  /* ---- Architecture flow ---- */
+  .flow {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 44rem;
+    border-inline-start: 1px solid var(--accent-line);
+  }
+
+  .flow-step {
+    position: relative;
+    padding: 0 0 1.2rem 1.6rem;
+  }
+
+  .flow-step:last-child {
+    padding-block-end: 0;
+  }
+
+  /* A node on the spine, so the block reads as a pipeline, not a bullet list. */
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -4.5px;
+    inset-block-start: 0.42em;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--paper);
+  }
+
+  .section.sunk .flow-step::before {
+    box-shadow: 0 0 0 3px var(--paper-sunk);
+  }
+
+  .flow-stage {
+    display: block;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .flow-detail {
+    display: block;
+    margin-block-start: 0.4rem;
+    color: var(--ink-2);
+    font-size: var(--step--1);
+    line-height: 1.7;
+  }
+
+  /* ---- Outcomes ---- */
+  .outcomes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .outcomes li {
+    position: relative;
+    padding-inline-start: 1.3rem;
+  }
+
+  .outcomes li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.7em;
+    width: 0.7rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  /* ---- Chips ---- */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .chip {
+    padding: 0.16rem 0.5rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.68rem;
+    background: var(--surface);
+  }
+
+  /* ---- Evaluation table ---- */
   .table-wrap {
     overflow-x: auto;
     border: 1px solid var(--line);
@@ -369,7 +548,7 @@ const copy = {
 
   .table {
     width: 100%;
-    min-width: 38rem;
+    min-width: 36rem;
     border-collapse: collapse;
     font-size: var(--step--1);
   }
@@ -396,7 +575,7 @@ const copy = {
   .table tbody th {
     font-weight: 600;
     color: var(--ink);
-    width: 13rem;
+    width: 12rem;
   }
 
   .metric-value {
@@ -411,26 +590,51 @@ const copy = {
     border-block-end: 0;
   }
 
-  .project-foot {
-    margin-block-start: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
-  }
-
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
+  /* ---- Applications ---- */
+  .apps {
     list-style: none;
     padding: 0;
     margin: 0;
+    border-block-start: 1px solid var(--line-strong);
   }
 
-  .chip {
-    padding: 0.22rem 0.6rem;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
+  .app {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: 0.5rem clamp(1.5rem, 1rem + 3vw, 4rem);
+    padding-block: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+    border-block-end: 1px solid var(--line);
+  }
+
+  .app-name {
+    font-size: var(--step-1);
+    line-height: 1.3;
+  }
+
+  .app-status {
+    margin-block-start: 0.4rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+  }
+
+  .app-what {
     color: var(--ink-2);
-    font-size: 0.72rem;
-    background: var(--surface);
+    font-size: var(--step--1);
+    line-height: 1.7;
+    max-width: 42rem;
+  }
+
+  .app-stack {
+    margin-block-start: 0.9rem;
+  }
+
+  .app-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-block-start: 0.9rem;
+    font-size: var(--step--1);
   }
 
   /* ---- 2026 programme ---- */
@@ -469,5 +673,27 @@ const copy = {
     font-size: var(--step--1);
     line-height: 1.6;
     margin-block-start: 0.3rem;
+  }
+
+  @media (max-width: 58rem) {
+    .project,
+    .app {
+      grid-template-columns: 1fr;
+    }
+
+    .project {
+      gap: 1.5rem;
+    }
+
+    .rail {
+      position: static;
+    }
+
+    .rail-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+      gap: 0 1.5rem;
+      margin-block-start: 1.25rem;
+    }
   }
 </style>

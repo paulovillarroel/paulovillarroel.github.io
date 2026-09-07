@@ -27,8 +27,8 @@ const copy = {
     es: 'Parte del trabajo técnico consiste en dejarlo transferido. Estas son las conferencias, los programas de postgrado y las iniciativas abiertas donde he documentado y enseñado los métodos que uso en el Ministerio.',
     en: 'Part of technical work is leaving it transferable. These are the conferences, postgraduate programmes and open initiatives where I have documented and taught the methods I use at the Ministry.',
   },
-  venturesEyebrow: { es: 'Iniciativas abiertas', en: 'Open initiatives' },
-  venturesTitle: { es: 'Dos estructuras de trabajo abierto', en: 'Two open working structures' },
+  venturesEyebrow: { es: 'Dónde enseño', en: 'Where I teach' },
+  venturesTitle: { es: 'Un programa de postgrado y dos escuelas abiertas', en: 'One postgraduate programme and two open schools' },
   curriculumEyebrow: { es: 'Contenidos', en: 'Contents' },
   curriculumTitle: {
     es: 'Métodos y herramientas que enseño',
@@ -50,10 +50,14 @@ const copy = {
   },
   talksEyebrow: { es: 'Registro', en: 'Record' },
   talksTitle: { es: 'Dónde he presentado este trabajo', en: 'Where this work has been presented' },
+  talksLede: {
+    es: 'Conferencias con revisión de pares y espacios de formación del sector público.',
+    en: 'Peer-reviewed conferences and public-sector training venues.',
+  },
 } as const;
 
 // Talks read better grouped by kind than as one long mixed list.
-const grouped = (['conference', 'teaching', 'government'] as const).map((kind) => ({
+const grouped = (['conference', 'government'] as const).map((kind) => ({
   kind,
   items: APPEARANCES.filter((a) => a.kind === kind),
 }));
@@ -70,49 +74,6 @@ const media = APPEARANCES.filter((a) => a.kind === 'media');
   description={copy.metaDescription[lang]}
 >
   <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]} lede={copy.lede[lang]} />
-
-  <Section sunk id="ponencias" eyebrow={copy.talksEyebrow[lang]} title={copy.talksTitle[lang]}>
-    <div class="talks">
-      {
-        grouped.map((group) => (
-          <section class="talk-group">
-            <h3 class="group-title">{APPEARANCE_KINDS[group.kind][lang]}</h3>
-            <ul class="talk-list">
-              {group.items.map((item) => (
-                <li class="talk">
-                  <p class="talk-year mono">{item.year}</p>
-                  <p class="talk-title">
-                    {item.url ? (
-                      <a class="link" href={item.url} rel="noopener" target="_blank">
-                        {item.title[lang]}
-                      </a>
-                    ) : (
-                      item.title[lang]
-                    )}
-                  </p>
-                  <p class="talk-venue muted">{item.venue[lang]}</p>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
-      }
-    </div>
-
-    <div class="media">
-      <h3 class="group-title">{APPEARANCE_KINDS.media[lang]}</h3>
-      <ul class="media-list">
-        {
-          media.map((item) => (
-            <li>
-              <span class="talk-year mono">{item.year}</span> {item.title[lang]}
-              <span class="muted"> — {item.venue[lang]}</span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </Section>
 
   <Section id="ejercicios" eyebrow={copy.artefactsEyebrow[lang]} title={copy.artefactsTitle[lang]} lede={copy.artefactsLede[lang]}>
     <ul class="artefacts">
@@ -182,6 +143,49 @@ const media = APPEARANCES.filter((a) => a.kind === 'media');
           }
         </tbody>
       </table>
+    </div>
+  </Section>
+
+  <Section sunk id="ponencias" eyebrow={copy.talksEyebrow[lang]} title={copy.talksTitle[lang]} lede={copy.talksLede[lang]}>
+    <div class="talks">
+      {
+        grouped.map((group) => (
+          <section class="talk-group">
+            <h3 class="group-title">{APPEARANCE_KINDS[group.kind][lang]}</h3>
+            <ul class="talk-list">
+              {group.items.map((item) => (
+                <li class="talk">
+                  <p class="talk-year mono">{item.year}</p>
+                  <p class="talk-title">
+                    {item.url ? (
+                      <a class="link" href={item.url} rel="noopener" target="_blank">
+                        {item.title[lang]}
+                      </a>
+                    ) : (
+                      item.title[lang]
+                    )}
+                  </p>
+                  <p class="talk-venue muted">{item.venue[lang]}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="media">
+      <h3 class="group-title">{APPEARANCE_KINDS.media[lang]}</h3>
+      <ul class="media-list">
+        {
+          media.map((item) => (
+            <li>
+              <span class="talk-year mono">{item.year}</span> {item.title[lang]}
+              <span class="muted"> — {item.venue[lang]}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </Section>
 

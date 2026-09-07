@@ -4,7 +4,8 @@ import { CAREER_NARRATIVE, CONCLUSIONS, PILLARS, PRODUCTION_SYSTEMS } from '@/da
 import { METHOD_GROUPS, PROJECTS, STRATEGIC_PROGRAMME } from '@/data/projects';
 import { EDUCATION, RECOGNITION, TIMELINE } from '@/data/career';
 import { APPEARANCES, CURRICULUM, VENTURES } from '@/data/teaching';
-import { COHORT_ARTEFACTS, ENGINEERING_CASES, POSITIONS } from '@/data/notes';
+import { COHORT_ARTEFACTS, POSITIONS } from '@/data/notes';
+import { APPS } from '@/data/apps';
 
 const abs = (site: URL | undefined, path: string) => new URL(path, site ?? new URL(SITE.url)).href;
 
@@ -26,8 +27,8 @@ const PAGE_NOTES: Record<keyof typeof ROUTES, Record<Locale, string>> = {
     en: 'Technical surface by discipline plus eight artificial-intelligence and advanced-analytics systems in detail: context, methodological approach, evaluation and stack for each.',
   },
   notes: {
-    es: 'Casos de ingeniería resueltos con su razonamiento completo, y posiciones técnicas sobre sesgo de supervivencia en listas de espera, interoperabilidad semántica y gobernanza de datos sensibles de salud.',
-    en: 'Solved engineering cases with the full reasoning, plus technical positions on survivorship bias in waiting lists, semantic interoperability and governance of sensitive health data.',
+    es: 'Cinco posiciones técnicas argumentadas —sesgo de supervivencia en listas de espera, interoperabilidad semántica, supervisión humana obligatoria, gobernanza de datos sensibles y reproducibilidad— cada una anclada al sistema donde se sostiene.',
+    en: 'Five argued technical positions — survivorship bias in waiting lists, semantic interoperability, mandatory human oversight, sensitive data governance and reproducibility — each anchored to the system where it holds.',
   },
   teaching: {
     es: 'Ponencias, docencia de postgrado, iniciativas abiertas y el temario técnico que enseño.',
@@ -51,7 +52,8 @@ const HEADINGS = {
   education: { es: 'Formación', en: 'Education' },
   recognition: { es: 'Reconocimientos', en: 'Recognition' },
   methods: { es: 'Superficie técnica', en: 'Technical surface' },
-  cases: { es: 'Casos de ingeniería resueltos', en: 'Solved engineering cases' },
+  apps: { es: 'Aplicaciones', en: 'Applications' },
+  architecture: { es: 'Arquitectura', en: 'Architecture' },
   positions: { es: 'Doctrina técnica', en: 'Technical positions' },
   artefacts: { es: 'Qué construyen las cohortes', en: 'What the cohorts build' },
   ventures: { es: 'Iniciativas de formación', en: 'Training initiatives' },
@@ -168,6 +170,13 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
     out.push(`${h('role')}: ${project.role[lang]}`, '');
     out.push(project.tagline[lang], '');
     out.push(`${h('context')}: ${project.context[lang]}`, '');
+    if (project.architecture) {
+      out.push(`${h('architecture')}:`);
+      for (const step of project.architecture) {
+        out.push(`- ${step.stage[lang]}: ${step.detail[lang]}`);
+      }
+      out.push('');
+    }
     out.push(`${h('approach')}:`);
     for (const item of project.approach[lang]) out.push(`- ${item}`);
     out.push('');
@@ -184,6 +193,17 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
     out.push(`${h('stack')}: ${project.stack.join(', ')}`, '');
   }
 
+  out.push(`## ${h('apps')}`, '');
+  for (const app of APPS) {
+    const links = [app.url, app.repo].filter(Boolean).join(' · ');
+    out.push(`### ${app.name}`, '');
+    out.push(app.what[lang], '');
+    out.push(`${h('stack')}: ${app.stack.join(', ')}`);
+    out.push(`${lang === 'es' ? 'Estado' : 'Status'}: ${app.status[lang]}`);
+    if (links) out.push(`${h('links')}: ${links}`);
+    out.push('');
+  }
+
   out.push(`## ${h('programme')}`, '');
   out.push(`${STRATEGIC_PROGRAMME.title[lang]} — ${STRATEGIC_PROGRAMME.since[lang]}`, '');
   out.push(STRATEGIC_PROGRAMME.intro[lang], '');
@@ -192,20 +212,12 @@ export function buildLlmsFull(lang: Locale, site: URL | undefined): string {
   });
   out.push('');
 
-  out.push(`## ${h('cases')}`, '');
-  for (const item of ENGINEERING_CASES) {
-    out.push(`### ${item.title[lang]}`, '');
-    out.push(`${lang === 'es' ? 'Problema' : 'Problem'}: ${item.problem[lang]}`, '');
-    out.push(`${lang === 'es' ? 'Decisión' : 'Decision'}: ${item.decision[lang]}`, '');
-    out.push(`${lang === 'es' ? 'Resultado' : 'Result'}: ${item.result[lang]}`, '');
-    out.push(`${h('stack')}: ${item.stack.join(', ')}`, '');
-  }
-
   out.push(`## ${h('positions')}`, '');
   for (const item of POSITIONS) {
     out.push(`### ${item.title[lang]}`, '');
     out.push(item.claim[lang], '');
     for (const paragraph of item.body[lang]) out.push(paragraph, '');
+    out.push(`${lang === 'es' ? 'Dónde se sostiene' : 'Where it holds'}: ${item.appliesToLabel[lang]}`, '');
   }
 
   out.push(`## ${h('timeline')}`, '');

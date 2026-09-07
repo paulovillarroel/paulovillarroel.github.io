@@ -1,6 +1,6 @@
 ---
-import type { Locale } from '@/i18n/config';
-import { ENGINEERING_CASES, POSITIONS } from '@/data/notes';
+import { ROUTES, type Locale } from '@/i18n/config';
+import { POSITIONS } from '@/data/notes';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PageHeader from '@/components/PageHeader.astro';
 import Section from '@/components/Section.astro';
@@ -14,25 +14,19 @@ const { lang } = Astro.props;
 const copy = {
   metaTitle: { es: 'Notas técnicas', en: 'Technical notes' },
   metaDescription: {
-    es: 'Casos de ingeniería resueltos y posiciones técnicas: DuckDB-WASM sin servidor, caché de embeddings por hash, sesgo de supervivencia en listas de espera, interoperabilidad semántica y gobernanza de datos sensibles.',
-    en: 'Solved engineering cases and technical positions: serverless DuckDB-WASM, hash-keyed embedding caches, survivorship bias in waiting lists, semantic interoperability and governance of sensitive data.',
+    es: 'Cinco posiciones técnicas sobre datos en salud pública: sesgo de supervivencia en listas de espera, interoperabilidad semántica, supervisión humana obligatoria, gobernanza bajo la Ley 21.719 y reproducibilidad como rendición de cuentas.',
+    en: 'Five technical positions on public health data: survivorship bias in waiting lists, semantic interoperability, mandatory human oversight, governance under Chile’s data protection law and reproducibility as accountability.',
   },
   eyebrow: { es: 'Notas técnicas', en: 'Technical notes' },
   title: {
-    es: 'Decisiones de ingeniería y posiciones técnicas',
-    en: 'Engineering decisions and technical positions',
+    es: 'Cinco lecturas del problema que cambian el diseño del sistema',
+    en: 'Five readings of the problem that change how the system is built',
   },
   lede: {
-    es: 'Dos registros. Primero, problemas concretos con la restricción que los definía y la decisión que se tomó. Después, las posiciones técnicas donde la lectura habitual del problema es común, cara y equivocada.',
-    en: 'Two registers. First, concrete problems with the constraint that defined them and the decision taken. Then the technical positions where the usual reading of the problem is common, costly and wrong.',
+    es: 'Cada una de estas posiciones existe porque la lectura habitual del problema es común, cara y equivocada, y porque decidir distinto cambió algo concreto en un sistema que está corriendo. Al final de cada una está el sistema donde esa decisión se sostiene.',
+    en: 'Each of these positions exists because the usual reading of the problem is common, costly and wrong, and because deciding otherwise changed something concrete in a system that is running. Each one ends with the system where that decision holds.',
   },
-  casesEyebrow: { es: 'Ingeniería', en: 'Engineering' },
-  casesTitle: { es: 'Problemas resueltos', en: 'Solved problems' },
-  positionsEyebrow: { es: 'Doctrina', en: 'Doctrine' },
-  positionsTitle: { es: 'Posiciones técnicas', en: 'Technical positions' },
-  problem: { es: 'Problema', en: 'Problem' },
-  decision: { es: 'Decisión', en: 'Decision' },
-  result: { es: 'Resultado', en: 'Result' },
+  appliesTo: { es: 'Dónde se sostiene', en: 'Where it holds' },
 } as const;
 ---
 
@@ -44,134 +38,46 @@ const copy = {
 >
   <PageHeader eyebrow={copy.eyebrow[lang]} title={copy.title[lang]} lede={copy.lede[lang]} />
 
-  <Section sunk id="ingenieria" eyebrow={copy.casesEyebrow[lang]} title={copy.casesTitle[lang]}>
-    <div class="cases">
-      {
-        ENGINEERING_CASES.map((item) => (
-          <article class="case" id={item.id}>
-            <h3 class="case-title">{item.title[lang]}</h3>
-            <dl class="case-body">
-              <div class="step">
-                <dt class="step-label">{copy.problem[lang]}</dt>
-                <dd class="step-text">{item.problem[lang]}</dd>
-              </div>
-              <div class="step">
-                <dt class="step-label">{copy.decision[lang]}</dt>
-                <dd class="step-text">{item.decision[lang]}</dd>
-              </div>
-              <div class="step">
-                <dt class="step-label">{copy.result[lang]}</dt>
-                <dd class="step-text">{item.result[lang]}</dd>
-              </div>
-            </dl>
-            <ul class="chips">
-              {item.stack.map((tech) => <li class="chip mono">{tech}</li>)}
-            </ul>
-          </article>
-        ))
-      }
-    </div>
-  </Section>
+  {
+    POSITIONS.map((item, i) => (
+      <Section sunk={i % 2 === 0} id={item.id}>
+        <article class="position">
+          <div class="position-head">
+            <p class="position-index mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="position-title">{item.title[lang]}</h2>
+            <p class="position-claim">{item.claim[lang]}</p>
+          </div>
 
-  <Section id="doctrina" eyebrow={copy.positionsEyebrow[lang]} title={copy.positionsTitle[lang]}>
-    <div class="positions">
-      {
-        POSITIONS.map((item) => (
-          <article class="position" id={item.id}>
-            <div class="position-head">
-              <h3 class="position-title">{item.title[lang]}</h3>
-              <p class="position-claim">{item.claim[lang]}</p>
-            </div>
-            <div class="position-body">
-              {item.body[lang].map((paragraph) => <p>{paragraph}</p>)}
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </Section>
+          <div class="position-body">
+            {item.body[lang].map((paragraph) => <p>{paragraph}</p>)}
+
+            <p class="applies">
+              <span class="applies-label mono">{copy.appliesTo[lang]}</span>
+              <a class="link" href={`${ROUTES.work[lang]}#${item.appliesTo}`}>
+                {item.appliesToLabel[lang]}
+              </a>
+            </p>
+          </div>
+        </article>
+      </Section>
+    ))
+  }
 </BaseLayout>
 
 <style>
-  /* ---- Engineering cases ---- */
-  .cases {
-    display: grid;
-    gap: clamp(2rem, 1.5rem + 2vw, 3rem);
-  }
-
-  .case {
-    padding: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    scroll-margin-block-start: 6rem;
-  }
-
-  .case-title {
-    font-size: var(--step-2);
-    max-width: 34ch;
-  }
-
-  .case-body {
-    display: grid;
-    gap: clamp(1.25rem, 1rem + 1vw, 1.75rem);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-    margin: clamp(1.4rem, 1.2rem + 1vw, 2rem) 0 0;
-  }
-
-  .step {
-    padding-block-start: 0.85rem;
-    border-block-start: 2px solid var(--accent);
-  }
-
-  .step-label {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .step-text {
-    margin: 0.6rem 0 0;
-    color: var(--ink-2);
-    font-size: var(--step--1);
-    line-height: 1.72;
-  }
-
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    list-style: none;
-    padding: 0;
-    margin-block-start: clamp(1.4rem, 1.2rem + 1vw, 2rem);
-  }
-
-  .chip {
-    padding: 0.22rem 0.6rem;
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    color: var(--ink-2);
-    font-size: 0.72rem;
-    background: var(--paper);
-  }
-
-  /* ---- Positions ---- */
-  .positions {
-    display: grid;
-    gap: clamp(2.75rem, 2rem + 3vw, 4.5rem);
-  }
-
   .position {
     display: grid;
-    gap: 1.25rem clamp(2rem, 1.2rem + 3.5vw, 4.5rem);
-    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    gap: 1.5rem clamp(2rem, 1.2rem + 3.5vw, 4.5rem);
+    grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
     align-items: start;
-    padding-block-start: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
-    border-block-start: 1px solid var(--line-strong);
     scroll-margin-block-start: 6rem;
+  }
+
+  .position-index {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    margin-block-end: 0.6rem;
   }
 
   .position-title {
@@ -180,7 +86,9 @@ const copy = {
   }
 
   .position-claim {
-    margin-block-start: 0.9rem;
+    margin-block-start: 1rem;
+    padding-block-start: 1rem;
+    border-block-start: 2px solid var(--accent);
     font-family: var(--font-serif);
     font-style: italic;
     font-size: var(--step-1);
@@ -199,13 +107,28 @@ const copy = {
     margin-block-start: 1.05em;
   }
 
+  /* Anchors the argument to the system it was actually decided in. */
+  .applies {
+    margin-block-start: 1.75rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid var(--line-strong);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 0.8rem;
+  }
+
+  .applies-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
   @media (max-width: 56rem) {
     .position {
       grid-template-columns: 1fr;
-    }
-
-    .position-body {
-      margin-block-start: 0.25rem;
+      gap: 1.25rem;
     }
   }
 </style>

@@ -5,12 +5,32 @@ export type Venture = {
   name: string;
   since: string;
   url?: string;
+  /** Public repository holding the programme material. */
+  repo?: string;
   tagline: I18n<string>;
   body: I18n<string[]>;
   bullets: I18n<string[]>;
 };
 
 export const VENTURES: Venture[] = [
+  {
+    id: 'unab',
+    name: 'Diplomado en Salud Digital, UNAB',
+    since: '2022',
+    tagline: {
+      es: 'Docencia de postgrado en dirección y gestión de estrategias en salud digital.',
+      en: 'Postgraduate teaching in digital health strategy leadership and management.',
+    },
+    body: {
+      es: [
+        'Docente del Diplomado en Dirección y Gestión de Estrategias en Salud Digital de la Universidad Andrés Bello, dirigido a profesionales que van a conducir procesos de transformación digital dentro de instituciones de salud.',
+      ],
+      en: [
+        'Faculty on the Postgraduate Diploma in Digital Health Strategy Leadership and Management at Universidad Andrés Bello, aimed at professionals who will lead digital transformation inside health institutions.',
+      ],
+    },
+    bullets: { es: [], en: [] },
+  },
   {
     id: 'hazla-con-datos',
     name: 'Hazla con Datos',
@@ -37,32 +57,22 @@ export const VENTURES: Venture[] = [
     name: 'OpenSalud LAB',
     since: '2018',
     url: 'https://opensaludlab.org/',
+    repo: 'https://github.com/paulovillarroel/ciencia_datos',
     tagline: {
-      es: 'Laboratorio ciudadano de innovación abierta en servicios públicos de salud.',
-      en: 'Citizen laboratory for open innovation in public health services.',
+      es: 'Bootcamp abierto de ciencia de datos en salud, con todo el material en un repositorio público.',
+      en: 'Open health data science bootcamp, with all its material in a public repository.',
     },
     body: {
       es: [
-        'OpenSalud LAB nació en 2018 para impulsar el rediseño de servicios públicos de salud, acompañar el desarrollo de intraemprendimientos y conectar a los equipos clínicos con herramientas digitales.',
+        'OpenSalud LAB nació en 2018 como laboratorio ciudadano de innovación abierta en servicios públicos de salud. Su desarrollo principal fue el bootcamp de Ciencia de Datos en Salud, alojado íntegramente en un repositorio público de GitHub.',
+        'El programa reunió más de 100 horas de formación audiovisual y más de 200 horas de recursos prácticos, con módulos de programación en R, análisis exploratorio, modelamiento estadístico, gestión de procesos y reproducibilidad técnica, desarrollados junto a R-Ladies Concepción y Data UC de la Pontificia Universidad Católica de Chile.',
       ],
       en: [
-        'OpenSalud LAB was created in 2018 to drive the redesign of public health services, support the development of intrapreneurship and connect clinical teams with digital tools.',
+        'OpenSalud LAB was created in 2018 as a citizen laboratory for open innovation in public health services. Its main output was the Health Data Science bootcamp, hosted entirely in a public GitHub repository.',
+        'The programme gathered over 100 hours of video training and more than 200 hours of practical resources, covering R programming, exploratory analysis, statistical modelling, process management and technical reproducibility, built with R-Ladies Concepción and Data UC at the Pontifical Catholic University of Chile.',
       ],
     },
-    bullets: {
-      es: [
-        'Mes del Diseño en Salud, como espacio de colaboración abierta.',
-        'Programas de mentoría a emprendimientos tecnológicos en salud (healthtech).',
-        'Nurse in Tech, para fortalecer el liderazgo tecnológico de los profesionales de enfermería en la digitalización asistencial.',
-        'Curso Ciencia de Datos en Salud (v2), en repositorio público de GitHub: más de 100 horas de formación audiovisual y más de 200 horas de recursos prácticos, con módulos de R, análisis exploratorio, modelamiento estadístico, BPMN y reproducibilidad, desarrollados junto a R-Ladies Concepción y Data UC de la Pontificia Universidad Católica de Chile.',
-      ],
-      en: [
-        'Mes del Diseño en Salud, an open collaboration space around health design.',
-        'Mentoring programmes for healthtech ventures.',
-        'Nurse in Tech, strengthening the technological leadership of nursing professionals in care digitisation.',
-        'Health Data Science course (v2), in a public GitHub repository: over 100 hours of video training and more than 200 hours of practical resources, covering R, exploratory analysis, statistical modelling, BPMN and reproducibility, built with R-Ladies Concepción and Data UC at the Pontifical Catholic University of Chile.',
-      ],
-    },
+    bullets: { es: [], en: [] },
   },
 ];
 
@@ -137,7 +147,7 @@ export const CURRICULUM: CurriculumPhase[] = [
   },
 ];
 
-export type AppearanceKind = 'conference' | 'teaching' | 'media' | 'government';
+export type AppearanceKind = 'conference' | 'media' | 'government';
 
 export type Appearance = {
   year: string;
@@ -149,7 +159,6 @@ export type Appearance = {
 
 export const APPEARANCE_KINDS: Record<AppearanceKind, I18n<string>> = {
   conference: { es: 'Conferencia', en: 'Conference' },
-  teaching: { es: 'Docencia', en: 'Teaching' },
   government: { es: 'Sector público', en: 'Public sector' },
   media: { es: 'Medios', en: 'Media' },
 };
@@ -221,36 +230,6 @@ export const APPEARANCES: Appearance[] = [
       en: 'Lead facilitator of the Health Data Science workshop and workshop leader in the Public Innovators Network',
     },
     venue: { es: 'Laboratorio de Gobierno de Chile', en: 'Laboratorio de Gobierno, Chile' },
-  },
-  {
-    year: '2022–2026',
-    kind: 'teaching',
-    title: {
-      es: 'Docente del Diplomado en Dirección y Gestión de Estrategias en Salud Digital',
-      en: 'Faculty on the Postgraduate Diploma in Digital Health Strategy Management',
-    },
-    venue: { es: 'Universidad Andrés Bello (UNAB)', en: 'Universidad Andrés Bello (UNAB)' },
-  },
-  {
-    year: '2019',
-    kind: 'teaching',
-    title: {
-      es: 'Docente invitado en metodologías LEAN y optimización de procesos hospitalarios',
-      en: 'Guest lecturer in LEAN methodologies and hospital process optimisation',
-    },
-    venue: { es: 'Servicio de Salud Coquimbo', en: 'Coquimbo Health Service' },
-  },
-  {
-    year: '2019–2026',
-    kind: 'teaching',
-    title: {
-      es: 'Ponencias e intervenciones académicas',
-      en: 'Academic talks and interventions',
-    },
-    venue: {
-      es: 'Universidad del Desarrollo · Universidad Finis Terrae',
-      en: 'Universidad del Desarrollo · Universidad Finis Terrae',
-    },
   },
   {
     year: '2019–2026',
