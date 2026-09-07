@@ -67,10 +67,22 @@ export type Pillar = {
 
 export const PILLARS: Pillar[] = [
   {
+    id: 'engineering-without-cluster',
+    title: {
+      es: 'Ingeniería de datos sin clúster',
+      en: 'Data engineering without a cluster',
+    },
+    body: {
+      es: 'Decenas de millones de registros hospitalarios procesados en computadores convencionales, con motores OLAP embebidos y formatos columnares abiertos. Sin clústeres, sin licencias privativas.',
+      en: 'Tens of millions of hospital records processed on ordinary desktop machines, with embedded OLAP engines and open columnar formats. No clusters, no proprietary licences.',
+    },
+    keywords: ['DuckDB', 'Apache Parquet', 'R', 'Python'],
+  },
+  {
     id: 'clinical-analytics',
     title: {
-      es: 'Ciencia de datos nacida en la práctica clínica',
-      en: 'Data science born in clinical practice',
+      es: 'Analítica avanzada nacida en la práctica clínica',
+      en: 'Advanced analytics born in clinical practice',
     },
     body: {
       es: 'Los modelos que funcionan no se diseñan desde la abstracción de los datos, sino desde las fallas operacionales del cuidado directo. Veinte años de ejercicio asistencial definen qué vale la pena predecir.',
@@ -89,18 +101,6 @@ export const PILLARS: Pillar[] = [
       en: 'NLP over clinical referrals, anomaly detection and ensemble classification, always with mandatory human oversight. The algorithm triages; it never dismisses on its own.',
     },
     keywords: ['NLP', 'embeddings', 'GBDT', 'human-in-the-loop'],
-  },
-  {
-    id: 'engineering-without-cluster',
-    title: {
-      es: 'Ingeniería de datos sin clúster',
-      en: 'Data engineering without a cluster',
-    },
-    body: {
-      es: 'Decenas de millones de registros hospitalarios procesados en computadores convencionales, con motores OLAP embebidos y formatos columnares abiertos. Sin clústeres, sin licencias privativas.',
-      en: 'Tens of millions of hospital records processed on ordinary desktop machines, with embedded OLAP engines and open columnar formats. No clusters, no proprietary licences.',
-    },
-    keywords: ['DuckDB', 'Apache Parquet', 'R', 'Python'],
   },
   {
     id: 'capacity-building',

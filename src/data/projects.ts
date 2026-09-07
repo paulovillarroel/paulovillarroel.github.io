@@ -889,6 +889,34 @@ export type MethodGroup = {
 export const METHOD_GROUPS: MethodGroup[] = [
   {
     title: {
+      es: 'Ingeniería de datos y plataforma',
+      en: 'Data engineering and platform',
+    },
+    items: [
+      'Motores OLAP embebidos (DuckDB) sobre Apache Parquet',
+      'Modelamiento de almacenes de datos por capas',
+      'Pruebas de calidad de datos (Pointblank)',
+      'Orquestación de pipelines (Kestra, Docker)',
+      'Pipelines reproducibles en R y Python',
+      'Control de versiones y revisión de código',
+    ],
+  },
+  {
+    title: {
+      es: 'Analítica avanzada y bioestadística',
+      en: 'Advanced analytics and biostatistics',
+    },
+    items: [
+      'Análisis de supervivencia y riesgos proporcionales',
+      'Diferencias en diferencias',
+      'Descomposición de desigualdad y análisis de equidad',
+      'Vinculación probabilística de registros (Fellegi-Sunter, Splink)',
+      'Modelos de proyección con backtest',
+      'Inferencia y modelamiento estadístico',
+    ],
+  },
+  {
+    title: {
       es: 'Inteligencia artificial y aprendizaje automático',
       en: 'Artificial intelligence and machine learning',
     },
@@ -916,20 +944,6 @@ export const METHOD_GROUPS: MethodGroup[] = [
   },
   {
     title: {
-      es: 'Analítica avanzada y bioestadística',
-      en: 'Advanced analytics and biostatistics',
-    },
-    items: [
-      'Análisis de supervivencia y riesgos proporcionales',
-      'Diferencias en diferencias',
-      'Descomposición de desigualdad y análisis de equidad',
-      'Vinculación probabilística de registros (Fellegi-Sunter, Splink)',
-      'Modelos de proyección con backtest',
-      'Inferencia y modelamiento estadístico',
-    ],
-  },
-  {
-    title: {
       es: 'Privacidad y gobernanza de datos',
       en: 'Privacy and data governance',
     },
@@ -938,20 +952,6 @@ export const METHOD_GROUPS: MethodGroup[] = [
       'Pseudoanonimización en pipeline',
       'Evaluación de impacto en protección de datos',
       'Gobernanza bajo la Ley 21.719',
-    ],
-  },
-  {
-    title: {
-      es: 'Ingeniería de datos y plataforma',
-      en: 'Data engineering and platform',
-    },
-    items: [
-      'Motores OLAP embebidos (DuckDB) sobre Apache Parquet',
-      'Modelamiento de almacenes de datos por capas',
-      'Pruebas de calidad de datos (Pointblank)',
-      'Orquestación de pipelines (Kestra, Docker)',
-      'Pipelines reproducibles en R y Python',
-      'Control de versiones y revisión de código',
     ],
   },
 ];
