@@ -20,8 +20,8 @@ export const PERSON = {
   } satisfies I18n<string>,
   /** One-sentence summary reused in meta descriptions and JSON-LD. */
   summary: {
-    es: 'Diseño y opero los modelos de inteligencia artificial y los sistemas de analítica avanzada que buscan a los pacientes que el sistema de salud pierde: listas de espera, sospecha oncológica encubierta, identidades fragmentadas. Todo sobre tecnología abierta y hardware convencional, para que sea replicable en cualquier sistema de salud con infraestructura restringida.',
-    en: 'I design and run the artificial-intelligence models and advanced analytics systems that look for the patients a health system loses: waiting lists, hidden cancer suspicion, fragmented identities. All of it on open technology and ordinary hardware, so it can be replicated in any health system working under infrastructure constraints.',
+    es: 'Resuelvo problemas complejos de sistemas públicos de salud con ciencia de datos e inteligencia artificial: los que el análisis convencional no alcanza a tratar por volumen, por la ambigüedad del registro clínico o porque la decisión que hay detrás no tolera un error automático. Veinte años en el sistema público chileno, desde la práctica clínica hasta modelos que hoy operan a escala nacional sobre tecnología abierta.',
+    en: 'I solve complex problems in public health systems with data science and artificial intelligence: the ones conventional analysis cannot reach because of volume, because the clinical record is ambiguous, or because the decision behind them tolerates no automatic error. Twenty years in the Chilean public system, from clinical practice to models now running at national scale on open technology.',
   } satisfies I18n<string>,
   location: {
     es: 'Santiago, Chile',
