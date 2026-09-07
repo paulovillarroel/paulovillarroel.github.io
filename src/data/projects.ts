@@ -726,8 +726,8 @@ export const PROJECTS: Project[] = [
       {
         stage: { es: 'Capas y compuerta', en: 'Layers and gate' },
         detail: {
-          es: 'Capa cruda y capa transformada, con pruebas de calidad Pointblank entre ambas. Lo que no pasa las pruebas no se publica y vuelve al establecimiento de origen.',
-          en: 'A raw layer and a transformed layer, with Pointblank quality tests between them. What fails the tests is not published and goes back to the originating facility.',
+          es: 'Capa cruda (bronce) y capa transformada (plata), con 34 pruebas automatizadas de Pointblank sobre ambas. Es una compuerta, no un informe: lo que no pasa las pruebas no se publica y vuelve al establecimiento que lo originó.',
+          en: 'A raw (bronze) and a transformed (silver) layer, with 34 automated Pointblank tests over both. It is a gate, not a report: what fails the tests is not published and goes back to the facility that produced it.',
         },
       },
       {
@@ -780,7 +780,7 @@ export const PROJECTS: Project[] = [
         'R para el modelamiento estadístico, el análisis de supervivencia y los reportes reproducibles con Quarto y Shiny; Python para los pipelines de producción, la vectorización de lenguaje natural y el entrenamiento de modelos de clasificación.',
         'Prácticas de ingeniería de software dentro de dependencias gubernamentales: Git, GitHub Flow con revisión de pull requests, Bash, entornos Linux y repositorios versionados, garantizando la reproducibilidad metodológica y la auditabilidad formal de las estimaciones ministeriales.',
         'Un esqueleto de proyecto común para toda la unidad —estructura de carpetas, rutas configurables, script de ejecución único— de modo que cualquier repositorio se levanta y se corre igual, y las convenciones quedan escritas en vez de vivir en la cabeza de alguien.',
-        'Validación de calidad del almacén como compuerta previa a la publicación: pruebas sobre la capa cruda y sobre la capa transformada con Pointblank, que derivan a los establecimientos los registros con problemas y certifican lo que sale en los reportes oficiales.',
+        'Validación de calidad del almacén como compuerta previa a la publicación: 34 pruebas automatizadas con Pointblank sobre la capa cruda y la transformada, que derivan a los establecimientos los registros con problemas y certifican lo que sale en los reportes oficiales.',
         'Orquestación de los pipelines con Kestra sobre Docker, encadenando la ejecución de cada proyecto y el depósito de resultados sin intervención manual.',
         'Exploración interactiva sin servidor: DuckDB compilado a WebAssembly consulta archivos Parquet servidos como estáticos, de modo que el motor analítico corre en el navegador de quien consulta. No hay backend que levantar ni base de datos que exponer, en una institución donde ambas cosas cuestan meses de tramitación.',
       ],
@@ -789,7 +789,7 @@ export const PROJECTS: Project[] = [
         'R for statistical modelling, survival analysis and reproducible reporting with Quarto and Shiny; Python for production pipelines, natural-language vectorisation and classification model training.',
         'Software-engineering practice inside government bodies: Git, GitHub Flow with pull-request review, Bash, Linux environments and versioned repositories, guaranteeing methodological reproducibility and formal auditability of ministry estimates.',
         'A shared project skeleton across the unit — folder structure, configurable paths, a single run script — so any repository starts and runs the same way, and conventions are written down instead of living in someone’s head.',
-        'Data warehouse quality validation as a gate before publication: tests over the raw and the transformed layer with Pointblank, routing problem records back to the facilities and certifying what goes into official reports.',
+        'Data warehouse quality validation as a gate before publication: 34 automated Pointblank tests over the raw and the transformed layer, routing problem records back to facilities and certifying what goes into official reports.',
         'Pipeline orchestration with Kestra on Docker, chaining each project’s execution and result delivery without manual intervention.',
         'Serverless interactive exploration: DuckDB compiled to WebAssembly queries Parquet files served as static assets, so the analytical engine runs in the reader’s own browser. There is no backend to stand up and no database to expose, in an institution where either takes months of paperwork.',
       ],

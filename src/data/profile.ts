@@ -31,6 +31,19 @@ export const PRODUCTION_SYSTEMS: ProductionSystem[] = [
   },
   {
     name: {
+      es: 'Validación de calidad del almacén de listas de espera',
+      en: 'Quality validation of the waiting list warehouse',
+    },
+    what: {
+      es: 'Somete cada corte mensual a 34 pruebas automatizadas sobre la capa cruda y la transformada, deriva los registros con problemas al establecimiento que los originó y certifica lo que se publica en los reportes oficiales. Lo que no pasa las pruebas no sale.',
+      en: 'Runs 34 automated tests over each monthly cut on the raw and the transformed layer, routes problem records back to the facility that produced them, and certifies what goes into official reports. What fails the tests does not ship.',
+    },
+    cadence: { es: 'Mensual, por corte', en: 'Monthly, per cut' },
+    org: { es: 'MINSAL', en: 'Ministry of Health' },
+    methods: ['Pointblank', 'Capa bronce / plata', 'R', 'DuckDB'],
+  },
+  {
+    name: {
       es: 'Detección de anomalías en el Registro Nacional de Listas de Espera',
       en: 'Anomaly detection in the National Waiting List Registry',
     },
